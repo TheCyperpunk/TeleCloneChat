@@ -390,12 +390,19 @@ function TeleChat() {
       {showSidebar && (
         <ChatSidebar
           chats={mockChats}
+          stories={mockStories}
           groups={mockGroups}
+          explorePosts={mockExplorePosts}
           channels={channels}
           bots={mockBots}
           savedMessages={savedMessages}
+          currentUserName="You"
+          currentUserAvatar={undefined}
+          hasOwnStory={false}
           selectedChatId={selectedChatId}
           onChatSelect={setSelectedChatId}
+          onStoryClick={handleStoryClick}
+          onAddStory={() => console.log("Add story")}
           onNewChat={() => setShowNewChat(true)}
           onNewGroup={() => setShowNewChat(true)}
           onNewChannel={() => console.log("Create channel")}

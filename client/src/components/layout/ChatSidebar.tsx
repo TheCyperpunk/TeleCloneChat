@@ -4,6 +4,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatListItem, ChatListItemProps } from "../chat/ChatListItem";
 import { CategoryTabs, Category } from "./CategoryTabs";
 import { SearchBar } from "./SearchBar";
+import { StoriesView, StoryUser } from "../views/StoriesView";
+import { ExploreView } from "../views/ExploreView";
 import { ChannelsView, Channel } from "../views/ChannelsView";
 import { BotsView, BotItem } from "../views/BotsView";
 import { SavedView, SavedMessage } from "../views/SavedView";
@@ -17,14 +19,29 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "../ThemeToggle";
 
+interface ExplorePost {
+  id: string;
+  imageUrl: string;
+  likes: number;
+  comments: number;
+  userName: string;
+}
+
 interface ChatSidebarProps {
   chats: ChatListItemProps[];
+  stories: StoryUser[];
   groups: ChatListItemProps[];
+  explorePosts: ExplorePost[];
   channels: Channel[];
   bots: BotItem[];
   savedMessages: SavedMessage[];
+  currentUserName: string;
+  currentUserAvatar?: string;
+  hasOwnStory?: boolean;
   selectedChatId?: string;
   onChatSelect: (chatId: string) => void;
+  onStoryClick: (userId: string) => void;
+  onAddStory: () => void;
   onNewChat: () => void;
   onNewGroup: () => void;
   onNewChannel: () => void;
@@ -36,12 +53,19 @@ interface ChatSidebarProps {
 
 export function ChatSidebar({
   chats,
+  stories,
   groups,
+  explorePosts,
   channels,
   bots,
   savedMessages,
+  currentUserName,
+  currentUserAvatar,
+  hasOwnStory = false,
   selectedChatId,
   onChatSelect,
+  onStoryClick,
+  onAddStory,
   onNewChat,
   onNewGroup,
   onNewChannel,
@@ -66,6 +90,7 @@ export function ChatSidebar({
 
   const unreadCounts: Partial<Record<Category, number>> = {
     all: allChats.reduce((sum, c) => sum + (c.unreadCount || 0), 0),
+    stories: (stories || []).filter((s) => s.hasStory && !s.isViewed).length,
     groups: (groups || []).reduce((sum, g) => sum + (g.unreadCount || 0), 0),
   };
 
@@ -95,8 +120,28 @@ export function ChatSidebar({
       case "all":
         return renderChatList(filteredChats);
 
+      case "stories":
+        return (
+          <StoriesView
+            stories={stories}
+            currentUserName={currentUserName}
+            currentUserAvatar={currentUserAvatar}
+            hasOwnStory={hasOwnStory}
+            onStoryClick={onStoryClick}
+            onAddStory={onAddStory}
+          />
+        );
+
       case "groups":
         return renderChatList(filteredGroups);
+
+      case "explore":
+        return (
+          <ExploreView
+            posts={explorePosts}
+            onPostClick={(postId) => console.log("View post:", postId)}
+          />
+        );
 
       case "channels":
         return (
