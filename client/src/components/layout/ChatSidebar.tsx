@@ -172,7 +172,7 @@ export function ChatSidebar({
                     name={channel.name}
                     avatar={channel.avatar}
                     lastMessage={channel.description}
-                    timestamp=""
+                    timestamp={channel.lastPostTime || ""}
                     unreadCount={0}
                     isSelected={channel.id === selectedChatId}
                     onClick={() => onChatSelect(channel.id)}
@@ -187,7 +187,7 @@ export function ChatSidebar({
                     name={bot.name}
                     avatar={bot.avatar}
                     lastMessage={bot.username}
-                    timestamp=""
+                    timestamp="Bot"
                     unreadCount={0}
                     isSelected={bot.id === selectedChatId}
                     onClick={() => onChatSelect(bot.id)}
