@@ -80,12 +80,25 @@ export function ChatSidebar({
 
   const allChats = [...(chats || []), ...(groups || [])];
   
+  const filteredPersonalChats = (chats || []).filter((chat) =>
+    chat.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   const filteredChats = allChats.filter((chat) =>
     chat.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const filteredGroups = (groups || []).filter((group) =>
     group.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredChannels = (channels || []).filter((ch) =>
+    ch.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const filteredBots = (bots || []).filter((bot) =>
+    bot.name.toLowerCase().includes(search.toLowerCase()) ||
+    bot.username.toLowerCase().includes(search.toLowerCase())
   );
 
   const unreadCounts: Partial<Record<Category, number>> = {
@@ -115,10 +128,103 @@ export function ChatSidebar({
     </ScrollArea>
   );
 
+  const renderAllContent = () => (
+    <ScrollArea className="flex-1">
+      <div className="px-2 pb-2">
+        {/* Personal Chats */}
+        {filteredPersonalChats.length > 0 && (
+          <>
+            <div className="px-2 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Direct Messages
+            </div>
+            {filteredPersonalChats.map((chat) => (
+              <ChatListItem
+                key={chat.id}
+                {...chat}
+                isSelected={chat.id === selectedChatId}
+                onClick={() => onChatSelect(chat.id)}
+              />
+            ))}
+          </>
+        )}
+
+        {/* Groups */}
+        {filteredGroups.length > 0 && (
+          <>
+            <div className="px-2 py-2 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Groups
+            </div>
+            {filteredGroups.map((group) => (
+              <ChatListItem
+                key={group.id}
+                {...group}
+                isSelected={group.id === selectedChatId}
+                onClick={() => onChatSelect(group.id)}
+              />
+            ))}
+          </>
+        )}
+
+        {/* Channels */}
+        {filteredChannels.length > 0 && (
+          <>
+            <div className="px-2 py-2 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Channels
+            </div>
+            {filteredChannels.map((channel) => (
+              <ChatListItem
+                key={channel.id}
+                id={channel.id}
+                name={channel.name}
+                avatar={channel.avatar}
+                lastMessage={channel.description}
+                timestamp=""
+                unreadCount={0}
+                isSelected={channel.id === selectedChatId}
+                onClick={() => onChatSelect(channel.id)}
+              />
+            ))}
+          </>
+        )}
+
+        {/* Bots */}
+        {filteredBots.length > 0 && (
+          <>
+            <div className="px-2 py-2 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Bots
+            </div>
+            {filteredBots.map((bot) => (
+              <ChatListItem
+                key={bot.id}
+                id={bot.id}
+                name={bot.name}
+                avatar={bot.avatar}
+                lastMessage={bot.username}
+                timestamp=""
+                unreadCount={0}
+                isSelected={bot.id === selectedChatId}
+                onClick={() => onChatSelect(bot.id)}
+              />
+            ))}
+          </>
+        )}
+
+        {filteredPersonalChats.length === 0 &&
+          filteredGroups.length === 0 &&
+          filteredChannels.length === 0 &&
+          filteredBots.length === 0 && (
+            <div className="text-center py-8 text-muted-foreground">
+              <p className="text-sm">No results found</p>
+            </div>
+          )}
+      </div>
+    </ScrollArea>
+  );
+
   const renderContent = () => {
     switch (activeCategory) {
       case "all":
-        return renderChatList(filteredChats);
+        return renderAllContent();
 
       case "stories":
         return (
