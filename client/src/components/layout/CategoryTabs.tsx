@@ -1,16 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  MessageCircle,
-  CircleDot,
-  Users,
-  Compass,
-  Radio,
-  Bot,
-  Bookmark,
-} from "lucide-react";
 
-export type Category = "chats" | "stories" | "groups" | "explore" | "channels" | "bots" | "saved";
+export type Category = "all" | "groups" | "channels" | "bots" | "saved";
 
 interface CategoryTabsProps {
   activeCategory: Category;
@@ -18,14 +9,12 @@ interface CategoryTabsProps {
   unreadCounts?: Partial<Record<Category, number>>;
 }
 
-const categories: { id: Category; label: string; icon: typeof MessageCircle }[] = [
-  { id: "chats", label: "Chats", icon: MessageCircle },
-  { id: "stories", label: "Stories", icon: CircleDot },
-  { id: "groups", label: "Groups", icon: Users },
-  { id: "explore", label: "Explore", icon: Compass },
-  { id: "channels", label: "Channels", icon: Radio },
-  { id: "bots", label: "Bots", icon: Bot },
-  { id: "saved", label: "Saved", icon: Bookmark },
+const categories: { id: Category; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "groups", label: "Groups" },
+  { id: "channels", label: "Channels" },
+  { id: "bots", label: "Bots" },
+  { id: "saved", label: "Saved" },
 ];
 
 export function CategoryTabs({
@@ -34,11 +23,10 @@ export function CategoryTabs({
   unreadCounts = {},
 }: CategoryTabsProps) {
   return (
-    <div className="border-b">
+    <div className="border-b border-border/50">
       <ScrollArea className="w-full">
-        <div className="flex px-2 py-2 gap-1">
+        <div className="flex px-3 py-2 gap-2">
           {categories.map((category) => {
-            const Icon = category.icon;
             const count = unreadCounts[category.id];
             const isActive = activeCategory === category.id;
 
@@ -47,27 +35,31 @@ export function CategoryTabs({
                 key={category.id}
                 onClick={() => onCategoryChange(category.id)}
                 className={cn(
-                  "flex flex-col items-center gap-1 min-w-[56px] px-2 py-2 rounded-lg transition-colors",
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap",
                   isActive
                     ? "bg-primary text-primary-foreground"
-                    : "hover-elevate active-elevate-2 text-muted-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
                 )}
                 data-testid={`tab-${category.id}`}
               >
-                <div className="relative">
-                  <Icon className="h-5 w-5" />
-                  {count && count > 0 && (
-                    <span className="absolute -top-1 -right-2 min-w-4 h-4 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center">
-                      {count > 99 ? "99+" : count}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px] font-medium">{category.label}</span>
+                <span>{category.label}</span>
+                {count !== undefined && count > 0 && (
+                  <span
+                    className={cn(
+                      "min-w-5 h-5 px-1.5 rounded-full text-xs flex items-center justify-center font-semibold",
+                      isActive
+                        ? "bg-primary-foreground/20 text-primary-foreground"
+                        : "bg-primary text-primary-foreground"
+                    )}
+                  >
+                    {count > 999 ? "999+" : count}
+                  </span>
+                )}
               </button>
             );
           })}
         </div>
-        <ScrollBar orientation="horizontal" />
+        <ScrollBar orientation="horizontal" className="invisible" />
       </ScrollArea>
     </div>
   );

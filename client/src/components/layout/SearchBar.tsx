@@ -7,12 +7,16 @@ interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  autoFocus?: boolean;
+  onBlur?: () => void;
 }
 
 export function SearchBar({
   value,
   onChange,
   placeholder = "Search",
+  autoFocus,
+  onBlur,
 }: SearchBarProps) {
   return (
     <div className="relative">
@@ -23,6 +27,8 @@ export function SearchBar({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className="pl-9 pr-9 rounded-full bg-accent/50 border-0"
+        autoFocus={autoFocus}
+        onBlur={onBlur}
         data-testid="input-search"
       />
       {value && (
