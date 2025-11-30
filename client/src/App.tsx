@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -10,6 +10,10 @@ import { NewChatDialog } from "@/components/layout/NewChatDialog";
 import { StoryViewer } from "@/components/stories/StoryViewer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MessageBubbleProps } from "@/components/chat/MessageBubble";
+import { StoryUser } from "@/components/views/StoriesView";
+import { Channel } from "@/components/views/ChannelsView";
+import { BotItem } from "@/components/views/BotsView";
+import { SavedMessage } from "@/components/views/SavedView";
 
 // todo: remove mock data - replace with real API data
 const mockChats = [
@@ -24,15 +28,6 @@ const mockChats = [
     bio: "Software developer. Coffee enthusiast.",
     username: "alice_dev",
     phone: "+1 234 567 8900",
-  },
-  {
-    id: "2",
-    name: "Team Project",
-    lastMessage: "Sarah: The presentation is ready for review",
-    timestamp: "1:15 PM",
-    unreadCount: 12,
-    isGroup: true,
-    memberCount: 8,
   },
   {
     id: "3",
@@ -55,15 +50,6 @@ const mockChats = [
     username: "carol_ux",
   },
   {
-    id: "5",
-    name: "Family Group",
-    lastMessage: "Mom: Don't forget Sunday dinner!",
-    timestamp: "Mon",
-    unreadCount: 5,
-    isGroup: true,
-    memberCount: 6,
-  },
-  {
     id: "6",
     name: "David Brown",
     lastMessage: "The concert was amazing!",
@@ -74,7 +60,7 @@ const mockChats = [
   {
     id: "7",
     name: "Eva Green",
-    lastMessage: "Happy birthday! 🎂",
+    lastMessage: "Happy birthday!",
     timestamp: "Sat",
     isOnline: true,
     lastMessageStatus: "delivered" as const,
@@ -82,12 +68,185 @@ const mockChats = [
 ];
 
 // todo: remove mock data
-const mockStories = [
-  { id: "s1", userId: "1", userName: "Alice Johnson", isViewed: false },
-  { id: "s2", userId: "3", userName: "Bob Smith", isViewed: true },
-  { id: "s3", userId: "4", userName: "Carol White", isViewed: false },
-  { id: "s4", userId: "6", userName: "David Brown", isViewed: false },
-  { id: "s5", userId: "7", userName: "Eva Green", isViewed: true },
+const mockGroups = [
+  {
+    id: "2",
+    name: "Team Project",
+    lastMessage: "Sarah: The presentation is ready for review",
+    timestamp: "1:15 PM",
+    unreadCount: 12,
+    isGroup: true,
+    memberCount: 8,
+  },
+  {
+    id: "5",
+    name: "Family Group",
+    lastMessage: "Mom: Don't forget Sunday dinner!",
+    timestamp: "Mon",
+    unreadCount: 5,
+    isGroup: true,
+    memberCount: 6,
+  },
+  {
+    id: "g3",
+    name: "College Friends",
+    lastMessage: "Jake: Reunion next month?",
+    timestamp: "Tue",
+    isGroup: true,
+    memberCount: 15,
+  },
+  {
+    id: "g4",
+    name: "Book Club",
+    lastMessage: "Next read: The Great Gatsby",
+    timestamp: "Wed",
+    isGroup: true,
+    memberCount: 8,
+  },
+];
+
+// todo: remove mock data
+const mockStories: StoryUser[] = [
+  { id: "1", name: "Alice Johnson", hasStory: true, isViewed: false, storyCount: 3, lastUpdate: "2h ago" },
+  { id: "3", name: "Bob Smith", hasStory: true, isViewed: true, storyCount: 1, lastUpdate: "5h ago" },
+  { id: "4", name: "Carol White", hasStory: true, isViewed: false, storyCount: 2, lastUpdate: "1h ago" },
+  { id: "6", name: "David Brown", hasStory: true, isViewed: false, storyCount: 4, lastUpdate: "3h ago" },
+  { id: "7", name: "Eva Green", hasStory: true, isViewed: true, storyCount: 1, lastUpdate: "6h ago" },
+];
+
+// todo: remove mock data
+const mockChannels: Channel[] = [
+  {
+    id: "ch1",
+    name: "Tech News Daily",
+    description: "Latest technology news and updates",
+    subscriberCount: 125000,
+    isSubscribed: true,
+    isVerified: true,
+    lastPost: "Apple announces new MacBook Pro with M4 chip",
+    lastPostTime: "1h ago",
+  },
+  {
+    id: "ch2",
+    name: "Crypto Updates",
+    description: "Cryptocurrency market analysis and news",
+    subscriberCount: 89000,
+    isSubscribed: false,
+    isVerified: true,
+    lastPost: "Bitcoin reaches new all-time high",
+  },
+  {
+    id: "ch3",
+    name: "Design Inspiration",
+    description: "Daily design inspiration and resources",
+    subscriberCount: 45000,
+    isSubscribed: true,
+    lastPost: "10 UI trends for 2025",
+  },
+  {
+    id: "ch4",
+    name: "Startup Hub",
+    description: "Startup news, funding updates, and tips",
+    subscriberCount: 67000,
+    isSubscribed: false,
+    isVerified: true,
+    lastPost: "Series A funding tips from YC partners",
+  },
+];
+
+// todo: remove mock data
+const mockBots: BotItem[] = [
+  {
+    id: "b1",
+    name: "GPT Assistant",
+    username: "gpt_helper",
+    description: "AI-powered assistant for answering questions and helping with tasks",
+    category: "AI & Productivity",
+    isVerified: true,
+    rating: 4.8,
+    usersCount: 500000,
+  },
+  {
+    id: "b2",
+    name: "Weather Bot",
+    username: "weather_now",
+    description: "Get real-time weather updates for any location",
+    category: "Utilities",
+    rating: 4.5,
+    usersCount: 120000,
+  },
+  {
+    id: "b3",
+    name: "Translate Bot",
+    username: "translator",
+    description: "Translate text between 100+ languages instantly",
+    category: "AI & Productivity",
+    isVerified: true,
+    rating: 4.7,
+    usersCount: 300000,
+  },
+  {
+    id: "b4",
+    name: "Quiz Master",
+    username: "quiz_bot",
+    description: "Test your knowledge with fun trivia quizzes",
+    category: "Games",
+    rating: 4.3,
+    usersCount: 80000,
+  },
+  {
+    id: "b5",
+    name: "Reminder Bot",
+    username: "remind_me",
+    description: "Set reminders and never forget important tasks",
+    category: "Utilities",
+    rating: 4.6,
+    usersCount: 200000,
+  },
+];
+
+// todo: remove mock data
+const mockSavedMessages: SavedMessage[] = [
+  {
+    id: "sm1",
+    content: "Here's the link to the project documentation you asked for",
+    fromName: "Alice Johnson",
+    chatName: "Alice Johnson",
+    timestamp: "Yesterday",
+    type: "link",
+  },
+  {
+    id: "sm2",
+    content: "Meeting notes from today's standup",
+    fromName: "Bob Smith",
+    chatName: "Team Project",
+    timestamp: "2 days ago",
+    type: "text",
+  },
+  {
+    id: "sm3",
+    content: "Check out this design mockup",
+    fromName: "Carol White",
+    chatName: "Design Team",
+    timestamp: "3 days ago",
+    type: "image",
+  },
+];
+
+// todo: remove mock data
+const mockExplorePosts = [
+  { id: "e1", imageUrl: "https://picsum.photos/seed/1/400/400", likes: 1234, comments: 89, userName: "user1" },
+  { id: "e2", imageUrl: "https://picsum.photos/seed/2/400/400", likes: 567, comments: 34, userName: "user2" },
+  { id: "e3", imageUrl: "https://picsum.photos/seed/3/400/400", likes: 890, comments: 56, userName: "user3" },
+  { id: "e4", imageUrl: "https://picsum.photos/seed/4/400/400", likes: 2345, comments: 123, userName: "user4" },
+  { id: "e5", imageUrl: "https://picsum.photos/seed/5/400/400", likes: 432, comments: 21, userName: "user5" },
+  { id: "e6", imageUrl: "https://picsum.photos/seed/6/400/400", likes: 765, comments: 45, userName: "user6" },
+  { id: "e7", imageUrl: "https://picsum.photos/seed/7/400/400", likes: 1098, comments: 67, userName: "user7" },
+  { id: "e8", imageUrl: "https://picsum.photos/seed/8/400/400", likes: 543, comments: 32, userName: "user8" },
+  { id: "e9", imageUrl: "https://picsum.photos/seed/9/400/400", likes: 876, comments: 54, userName: "user9" },
+  { id: "e10", imageUrl: "https://picsum.photos/seed/10/400/400", likes: 1567, comments: 98, userName: "user10" },
+  { id: "e11", imageUrl: "https://picsum.photos/seed/11/400/400", likes: 234, comments: 12, userName: "user11" },
+  { id: "e12", imageUrl: "https://picsum.photos/seed/12/400/400", likes: 678, comments: 43, userName: "user12" },
 ];
 
 // todo: remove mock data
@@ -127,7 +286,7 @@ const mockMessages: Record<string, MessageBubbleProps[]> = {
 const mockUserStories: Record<string, { id: string; content?: string; timestamp: string; backgroundColor?: string }[]> = {
   "1": [
     { id: "us1", content: "Just finished my morning workout!", timestamp: "2h ago", backgroundColor: "bg-gradient-to-br from-green-400 to-blue-500" },
-    { id: "us2", content: "Coffee time ☕", timestamp: "4h ago", backgroundColor: "bg-gradient-to-br from-orange-400 to-pink-500" },
+    { id: "us2", content: "Coffee time", timestamp: "4h ago", backgroundColor: "bg-gradient-to-br from-orange-400 to-pink-500" },
   ],
   "3": [
     { id: "us3", content: "Working on something exciting!", timestamp: "5h ago", backgroundColor: "bg-gradient-to-br from-purple-400 to-indigo-500" },
@@ -144,8 +303,11 @@ function TeleChat() {
   const [showNewChat, setShowNewChat] = useState(false);
   const [storyViewer, setStoryViewer] = useState<{ userId: string; index: number } | null>(null);
   const [messages, setMessages] = useState(mockMessages);
+  const [channels, setChannels] = useState(mockChannels);
+  const [savedMessages, setSavedMessages] = useState(mockSavedMessages);
 
-  const selectedChat = mockChats.find((chat) => chat.id === selectedChatId);
+  const allChats = [...mockChats, ...mockGroups];
+  const selectedChat = allChats.find((chat) => chat.id === selectedChatId);
   const chatMessages = selectedChatId ? messages[selectedChatId] || [] : [];
 
   const handleSendMessage = (content: string) => {
@@ -166,7 +328,7 @@ function TeleChat() {
   };
 
   const handleStoryClick = (userId: string) => {
-    const storyIndex = mockStories.findIndex((s) => s.userId === userId);
+    const storyIndex = mockStories.findIndex((s) => s.id === userId);
     if (storyIndex !== -1 && mockUserStories[userId]) {
       setStoryViewer({ userId, index: storyIndex });
     }
@@ -174,14 +336,11 @@ function TeleChat() {
 
   const handleNextStory = () => {
     if (!storyViewer) return;
-    const nextIndex = storyViewer.index + 1;
-    if (nextIndex < mockStories.length) {
-      const nextUserId = mockStories[nextIndex].userId;
-      if (mockUserStories[nextUserId]) {
-        setStoryViewer({ userId: nextUserId, index: nextIndex });
-      } else {
-        setStoryViewer(null);
-      }
+    const storiesWithContent = mockStories.filter((s) => s.hasStory && mockUserStories[s.id]);
+    const currentIdx = storiesWithContent.findIndex((s) => s.id === storyViewer.userId);
+    if (currentIdx < storiesWithContent.length - 1) {
+      const next = storiesWithContent[currentIdx + 1];
+      setStoryViewer({ userId: next.id, index: mockStories.findIndex((s) => s.id === next.id) });
     } else {
       setStoryViewer(null);
     }
@@ -189,17 +348,16 @@ function TeleChat() {
 
   const handlePreviousStory = () => {
     if (!storyViewer) return;
-    const prevIndex = storyViewer.index - 1;
-    if (prevIndex >= 0) {
-      const prevUserId = mockStories[prevIndex].userId;
-      if (mockUserStories[prevUserId]) {
-        setStoryViewer({ userId: prevUserId, index: prevIndex });
-      }
+    const storiesWithContent = mockStories.filter((s) => s.hasStory && mockUserStories[s.id]);
+    const currentIdx = storiesWithContent.findIndex((s) => s.id === storyViewer.userId);
+    if (currentIdx > 0) {
+      const prev = storiesWithContent[currentIdx - 1];
+      setStoryViewer({ userId: prev.id, index: mockStories.findIndex((s) => s.id === prev.id) });
     }
   };
 
   const handleSelectContact = (contactId: string) => {
-    const existingChat = mockChats.find((chat) => chat.id === contactId);
+    const existingChat = allChats.find((chat) => chat.id === contactId);
     if (existingChat) {
       setSelectedChatId(contactId);
     } else {
@@ -212,6 +370,18 @@ function TeleChat() {
     console.log("Create group:", groupName, "with members:", memberIds);
   };
 
+  const handleSubscribeChannel = (channelId: string) => {
+    setChannels((prev) =>
+      prev.map((ch) =>
+        ch.id === channelId ? { ...ch, isSubscribed: !ch.isSubscribed } : ch
+      )
+    );
+  };
+
+  const handleDeleteSavedMessage = (messageId: string) => {
+    setSavedMessages((prev) => prev.filter((m) => m.id !== messageId));
+  };
+
   const showSidebar = !isMobile || !selectedChatId;
   const showChat = !isMobile || selectedChatId;
 
@@ -221,6 +391,11 @@ function TeleChat() {
         <ChatSidebar
           chats={mockChats}
           stories={mockStories}
+          groups={mockGroups}
+          channels={channels}
+          bots={mockBots}
+          savedMessages={savedMessages}
+          explorePosts={mockExplorePosts}
           currentUserId="current"
           currentUserName="You"
           hasOwnStory={false}
@@ -229,7 +404,12 @@ function TeleChat() {
           onStoryClick={handleStoryClick}
           onAddStory={() => console.log("Add story")}
           onNewChat={() => setShowNewChat(true)}
+          onNewGroup={() => setShowNewChat(true)}
+          onNewChannel={() => console.log("Create channel")}
           onSettings={() => console.log("Settings")}
+          onSubscribeChannel={handleSubscribeChannel}
+          onStartBot={(botId) => console.log("Start bot:", botId)}
+          onDeleteSavedMessage={handleDeleteSavedMessage}
         />
       )}
 
@@ -240,9 +420,9 @@ function TeleChat() {
               chat={{
                 id: selectedChat.id,
                 name: selectedChat.name,
-                isOnline: selectedChat.isOnline,
-                isGroup: selectedChat.isGroup,
-                memberCount: selectedChat.memberCount,
+                isOnline: (selectedChat as any).isOnline,
+                isGroup: (selectedChat as any).isGroup,
+                memberCount: (selectedChat as any).memberCount,
               }}
               messages={chatMessages}
               onSendMessage={handleSendMessage}
@@ -277,12 +457,12 @@ function TeleChat() {
           {showProfile && selectedChat && !isMobile && (
             <ProfilePanel
               name={selectedChat.name}
-              isOnline={selectedChat.isOnline}
+              isOnline={(selectedChat as any).isOnline}
               bio={(selectedChat as any).bio}
               username={(selectedChat as any).username}
               phone={(selectedChat as any).phone}
-              isGroup={selectedChat.isGroup}
-              memberCount={selectedChat.memberCount}
+              isGroup={(selectedChat as any).isGroup}
+              memberCount={(selectedChat as any).memberCount}
               sharedMedia={[
                 { type: "image", count: 42 },
                 { type: "file", count: 12 },
@@ -307,13 +487,18 @@ function TeleChat() {
       {storyViewer && mockUserStories[storyViewer.userId] && (
         <StoryViewer
           userId={storyViewer.userId}
-          userName={mockStories[storyViewer.index].userName}
+          userName={mockStories.find((s) => s.id === storyViewer.userId)?.name || ""}
           stories={mockUserStories[storyViewer.userId]}
           onClose={() => setStoryViewer(null)}
           onNext={handleNextStory}
           onPrevious={handlePreviousStory}
-          hasNext={storyViewer.index < mockStories.length - 1}
-          hasPrevious={storyViewer.index > 0}
+          hasNext={
+            mockStories.filter((s) => s.hasStory && mockUserStories[s.id]).findIndex((s) => s.id === storyViewer.userId) <
+            mockStories.filter((s) => s.hasStory && mockUserStories[s.id]).length - 1
+          }
+          hasPrevious={
+            mockStories.filter((s) => s.hasStory && mockUserStories[s.id]).findIndex((s) => s.id === storyViewer.userId) > 0
+          }
         />
       )}
     </div>

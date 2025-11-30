@@ -2,9 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatListItem, ChatListItemProps } from "../chat/ChatListItem";
-import { StoriesBar, Story } from "../stories/StoriesBar";
+import { CategoryTabs, Category } from "./CategoryTabs";
 import { SearchBar } from "./SearchBar";
-import { Menu, Edit, Settings, Moon, Sun, LogOut } from "lucide-react";
+import { StoriesView, StoryUser } from "../views/StoriesView";
+import { GroupsView } from "../views/GroupsView";
+import { ExploreView } from "../views/ExploreView";
+import { ChannelsView, Channel } from "../views/ChannelsView";
+import { BotsView, BotItem } from "../views/BotsView";
+import { SavedView, SavedMessage } from "../views/SavedView";
+import { Menu, Edit, Settings, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,9 +20,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "../ThemeToggle";
 
+interface ExplorePost {
+  id: string;
+  imageUrl: string;
+  likes: number;
+  comments: number;
+  userName: string;
+}
+
 interface ChatSidebarProps {
   chats: ChatListItemProps[];
-  stories: Story[];
+  stories: StoryUser[];
+  groups: ChatListItemProps[];
+  channels: Channel[];
+  bots: BotItem[];
+  savedMessages: SavedMessage[];
+  explorePosts: ExplorePost[];
   currentUserId: string;
   currentUserName: string;
   currentUserAvatar?: string;
@@ -26,12 +45,22 @@ interface ChatSidebarProps {
   onStoryClick: (userId: string) => void;
   onAddStory: () => void;
   onNewChat: () => void;
+  onNewGroup: () => void;
+  onNewChannel: () => void;
   onSettings: () => void;
+  onSubscribeChannel: (channelId: string) => void;
+  onStartBot: (botId: string) => void;
+  onDeleteSavedMessage: (messageId: string) => void;
 }
 
 export function ChatSidebar({
   chats,
   stories,
+  groups,
+  channels,
+  bots,
+  savedMessages,
+  explorePosts,
   currentUserId,
   currentUserName,
   currentUserAvatar,
@@ -41,13 +70,123 @@ export function ChatSidebar({
   onStoryClick,
   onAddStory,
   onNewChat,
+  onNewGroup,
+  onNewChannel,
   onSettings,
+  onSubscribeChannel,
+  onStartBot,
+  onDeleteSavedMessage,
 }: ChatSidebarProps) {
   const [search, setSearch] = useState("");
+  const [activeCategory, setActiveCategory] = useState<Category>("chats");
 
-  const filteredChats = chats.filter((chat) =>
+  const filteredChats = (chats || []).filter((chat) =>
     chat.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  const unreadCounts: Partial<Record<Category, number>> = {
+    chats: (chats || []).reduce((sum, c) => sum + (c.unreadCount || 0), 0),
+    groups: (groups || []).reduce((sum, g) => sum + (g.unreadCount || 0), 0),
+    stories: (stories || []).filter((s) => s.hasStory && !s.isViewed).length,
+  };
+
+  const renderContent = () => {
+    switch (activeCategory) {
+      case "chats":
+        return (
+          <>
+            <div className="p-3">
+              <SearchBar
+                value={search}
+                onChange={setSearch}
+                placeholder="Search chats..."
+              />
+            </div>
+            <ScrollArea className="flex-1">
+              <div className="p-2">
+                {filteredChats.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <p className="text-sm">No chats found</p>
+                  </div>
+                ) : (
+                  filteredChats.map((chat) => (
+                    <ChatListItem
+                      key={chat.id}
+                      {...chat}
+                      isSelected={chat.id === selectedChatId}
+                      onClick={() => onChatSelect(chat.id)}
+                    />
+                  ))
+                )}
+              </div>
+            </ScrollArea>
+          </>
+        );
+
+      case "stories":
+        return (
+          <StoriesView
+            stories={stories}
+            currentUserName={currentUserName}
+            currentUserAvatar={currentUserAvatar}
+            hasOwnStory={hasOwnStory}
+            onStoryClick={onStoryClick}
+            onAddStory={onAddStory}
+          />
+        );
+
+      case "groups":
+        return (
+          <GroupsView
+            groups={groups}
+            selectedGroupId={selectedChatId}
+            onGroupSelect={onChatSelect}
+            onCreateGroup={onNewGroup}
+          />
+        );
+
+      case "explore":
+        return (
+          <ExploreView
+            posts={explorePosts}
+            onPostClick={(postId) => console.log("View post:", postId)}
+          />
+        );
+
+      case "channels":
+        return (
+          <ChannelsView
+            channels={channels}
+            selectedChannelId={selectedChatId}
+            onChannelSelect={onChatSelect}
+            onCreateChannel={onNewChannel}
+            onSubscribe={onSubscribeChannel}
+          />
+        );
+
+      case "bots":
+        return (
+          <BotsView
+            bots={bots}
+            selectedBotId={selectedChatId}
+            onBotSelect={onChatSelect}
+            onStartBot={onStartBot}
+          />
+        );
+
+      case "saved":
+        return (
+          <SavedView
+            messages={savedMessages}
+            onMessageClick={(msgId) => console.log("View saved:", msgId)}
+            onDeleteSaved={onDeleteSavedMessage}
+          />
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="w-full md:w-80 h-full flex flex-col border-r bg-sidebar">
@@ -82,42 +221,13 @@ export function ChatSidebar({
         </Button>
       </header>
 
-      <div className="p-3">
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          placeholder="Search chats..."
-        />
-      </div>
-
-      <StoriesBar
-        stories={stories}
-        currentUserId={currentUserId}
-        currentUserName={currentUserName}
-        currentUserAvatar={currentUserAvatar}
-        hasOwnStory={hasOwnStory}
-        onStoryClick={onStoryClick}
-        onAddStory={onAddStory}
+      <CategoryTabs
+        activeCategory={activeCategory}
+        onCategoryChange={setActiveCategory}
+        unreadCounts={unreadCounts}
       />
 
-      <ScrollArea className="flex-1">
-        <div className="p-2">
-          {filteredChats.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <p className="text-sm">No chats found</p>
-            </div>
-          ) : (
-            filteredChats.map((chat) => (
-              <ChatListItem
-                key={chat.id}
-                {...chat}
-                isSelected={chat.id === selectedChatId}
-                onClick={() => onChatSelect(chat.id)}
-              />
-            ))
-          )}
-        </div>
-      </ScrollArea>
+      {renderContent()}
     </div>
   );
 }
