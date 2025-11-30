@@ -128,98 +128,79 @@ export function ChatSidebar({
     </ScrollArea>
   );
 
-  const renderAllContent = () => (
-    <ScrollArea className="flex-1">
-      <div className="px-2 pb-2">
-        {/* Personal Chats */}
-        {filteredPersonalChats.length > 0 && (
-          <>
-            <div className="px-2 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Direct Messages
-            </div>
-            {filteredPersonalChats.map((chat) => (
-              <ChatListItem
-                key={chat.id}
-                {...chat}
-                isSelected={chat.id === selectedChatId}
-                onClick={() => onChatSelect(chat.id)}
-              />
-            ))}
-          </>
-        )}
+  const renderAllContent = () => {
+    // Combine all items with their type
+    const allItems = [
+      ...filteredPersonalChats.map((chat) => ({ type: "chat", data: chat })),
+      ...filteredGroups.map((group) => ({ type: "group", data: group })),
+      ...filteredChannels.map((channel) => ({ type: "channel", data: channel })),
+      ...filteredBots.map((bot) => ({ type: "bot", data: bot })),
+    ];
 
-        {/* Groups */}
-        {filteredGroups.length > 0 && (
-          <>
-            <div className="px-2 py-2 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Groups
-            </div>
-            {filteredGroups.map((group) => (
-              <ChatListItem
-                key={group.id}
-                {...group}
-                isSelected={group.id === selectedChatId}
-                onClick={() => onChatSelect(group.id)}
-              />
-            ))}
-          </>
-        )}
+    // Shuffle array using Fisher-Yates algorithm
+    const shuffled = [...allItems];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
 
-        {/* Channels */}
-        {filteredChannels.length > 0 && (
-          <>
-            <div className="px-2 py-2 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Channels
-            </div>
-            {filteredChannels.map((channel) => (
-              <ChatListItem
-                key={channel.id}
-                id={channel.id}
-                name={channel.name}
-                avatar={channel.avatar}
-                lastMessage={channel.description}
-                timestamp=""
-                unreadCount={0}
-                isSelected={channel.id === selectedChatId}
-                onClick={() => onChatSelect(channel.id)}
-              />
-            ))}
-          </>
-        )}
-
-        {/* Bots */}
-        {filteredBots.length > 0 && (
-          <>
-            <div className="px-2 py-2 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Bots
-            </div>
-            {filteredBots.map((bot) => (
-              <ChatListItem
-                key={bot.id}
-                id={bot.id}
-                name={bot.name}
-                avatar={bot.avatar}
-                lastMessage={bot.username}
-                timestamp=""
-                unreadCount={0}
-                isSelected={bot.id === selectedChatId}
-                onClick={() => onChatSelect(bot.id)}
-              />
-            ))}
-          </>
-        )}
-
-        {filteredPersonalChats.length === 0 &&
-          filteredGroups.length === 0 &&
-          filteredChannels.length === 0 &&
-          filteredBots.length === 0 && (
+    return (
+      <ScrollArea className="flex-1">
+        <div className="px-2 pb-2">
+          {shuffled.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <p className="text-sm">No results found</p>
             </div>
+          ) : (
+            shuffled.map((item) => {
+              if (item.type === "chat" || item.type === "group") {
+                const chat = item.data as ChatListItemProps;
+                return (
+                  <ChatListItem
+                    key={chat.id}
+                    {...chat}
+                    isSelected={chat.id === selectedChatId}
+                    onClick={() => onChatSelect(chat.id)}
+                  />
+                );
+              } else if (item.type === "channel") {
+                const channel = item.data as Channel;
+                return (
+                  <ChatListItem
+                    key={channel.id}
+                    id={channel.id}
+                    name={channel.name}
+                    avatar={channel.avatar}
+                    lastMessage={channel.description}
+                    timestamp=""
+                    unreadCount={0}
+                    isSelected={channel.id === selectedChatId}
+                    onClick={() => onChatSelect(channel.id)}
+                  />
+                );
+              } else if (item.type === "bot") {
+                const bot = item.data as BotItem;
+                return (
+                  <ChatListItem
+                    key={bot.id}
+                    id={bot.id}
+                    name={bot.name}
+                    avatar={bot.avatar}
+                    lastMessage={bot.username}
+                    timestamp=""
+                    unreadCount={0}
+                    isSelected={bot.id === selectedChatId}
+                    onClick={() => onChatSelect(bot.id)}
+                  />
+                );
+              }
+              return null;
+            })
           )}
-      </div>
-    </ScrollArea>
-  );
+        </div>
+      </ScrollArea>
+    );
+  };
 
   const renderContent = () => {
     switch (activeCategory) {
