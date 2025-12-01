@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatListItem, ChatListItemProps } from "../chat/ChatListItem";
 import { CategoryTabs, Category } from "./CategoryTabs";
 import { SearchBar } from "./SearchBar";
-import { Menu, Settings, LogOut, Search as SearchIcon } from "lucide-react";
+import { Menu, Settings, LogOut, Search as SearchIcon, User, Users, Phone, Bookmark, UserPlus, Info } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -131,7 +131,7 @@ export function ChatSidebar({
   };
 
   return (
-    <div className="w-full md:w-72 bg-sidebar border-r border-sidebar-border flex flex-col h-full">
+    <div className="w-full md:w-72 bg-sidebar border-r border-sidebar-border flex flex-col h-full animate-slide-in-left">
       {/* Header */}
       <div className="p-3 border-b border-sidebar-border">
         <div className="flex items-center justify-between mb-3">
@@ -145,10 +145,41 @@ export function ChatSidebar({
                 <Menu className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
+            <DropdownMenuContent align="start" className="w-56">
+              <DropdownMenuItem>
+                <User className="w-4 h-4 mr-2" />
+                <span>My Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={onNewGroup}>
+                <Users className="w-4 h-4 mr-2" />
+                <span>New Group</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Users className="w-4 h-4 mr-2" />
+                <span>Contacts</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Phone className="w-4 h-4 mr-2" />
+                <span>Calls</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Bookmark className="w-4 h-4 mr-2" />
+                <span>Saved Messages</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={onSettings}>
                 <Settings className="w-4 h-4 mr-2" />
                 <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <UserPlus className="w-4 h-4 mr-2" />
+                <span>Invite Friends</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Info className="w-4 h-4 mr-2" />
+                <span>About xmo</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
