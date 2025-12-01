@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Check, CheckCheck, Play, Link2, Eye, Download, Volume2 } from "lucide-react";
+import { Check, CheckCheck, Play, Link2, Eye, Download, Volume2, X } from "lucide-react";
 import { Avatar } from "./Avatar";
 import { useState } from "react";
 
@@ -49,6 +49,8 @@ export function MessageBubble({
   replyTo,
   media,
 }: MessageBubbleProps) {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   return (
     <div
       className={cn(
@@ -118,6 +120,8 @@ export function MessageBubble({
                   style={{ 
                     gridRow: `span ${rowSpan}`
                   }}
+                  onClick={() => setSelectedImage(item.url || "")}
+                  data-testid={`image-grid-${idx}`}
                 >
                   <img
                     src={item.url}
@@ -149,7 +153,7 @@ export function MessageBubble({
         {!Array.isArray(media) && (media?.type === "image" || media?.type === "video") && media?.url && (
           <>
             {media.type === "image" && (
-              <div className="rounded-xl overflow-hidden mb-1">
+              <div className="rounded-xl overflow-hidden mb-1 cursor-pointer" onClick={() => setSelectedImage(media.url || "")} data-testid="image-single">
                 <img 
                   src={media.url} 
                   alt="Message image"
@@ -326,6 +330,29 @@ export function MessageBubble({
         </div>
         )}
       </div>
+      
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-pointer"
+          onClick={() => setSelectedImage(null)}
+          data-testid="lightbox-overlay"
+        >
+          <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <img 
+              src={selectedImage} 
+              alt="Lightbox"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
+              data-testid="button-close-lightbox"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
