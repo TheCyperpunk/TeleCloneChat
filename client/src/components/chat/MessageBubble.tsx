@@ -160,8 +160,8 @@ export function MessageBubble({
           className={cn(
             "px-3 py-2 relative",
             isOwn
-              ? "bg-primary text-primary-foreground rounded-l-3xl"
-              : "bg-card border border-card-border rounded-r-3xl"
+              ? "bg-primary text-primary-foreground rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl"
+              : "bg-card border border-card-border rounded-tl-2xl rounded-tr-2xl rounded-br-2xl"
           )}
         >
           {replyTo && (
