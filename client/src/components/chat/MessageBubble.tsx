@@ -186,28 +186,28 @@ export function MessageBubble({
           )}
           
           {!Array.isArray(media) && media?.type === "audio" && media?.url && (
-            <div className="flex items-center gap-2 mb-0 py-1">
+            <div className="flex items-center gap-2.5 my-1">
               <button className={cn(
-                "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors",
+                "flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors",
                 isOwn
                   ? "bg-primary-foreground/40 hover:bg-primary-foreground/50"
                   : "bg-primary hover:bg-primary/90"
               )}>
                 <Play className={cn(
-                  "w-3.5 h-3.5 fill-current",
+                  "w-4 h-4 fill-current",
                   isOwn ? "text-primary-foreground" : "text-primary-foreground"
                 )} />
               </button>
               
-              <div className="flex-1 h-5 flex items-center">
-                <svg className="w-full h-full" viewBox="0 0 100 20" preserveAspectRatio="none">
+              <div className="flex-1 h-6 flex items-center">
+                <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
                   {[...Array(35)].map((_, i) => {
-                    const height = Math.random() * 16 + 2;
+                    const height = Math.random() * 20 + 2;
                     return (
                       <rect
                         key={i}
                         x={i * 2.85}
-                        y={(20 - height) / 2}
+                        y={(24 - height) / 2}
                         width="1.8"
                         height={height}
                         fill={isOwn ? "rgba(255,255,255,0.6)" : "rgba(42, 171, 238, 0.6)"}
@@ -229,7 +229,7 @@ export function MessageBubble({
               
               <button className="flex-shrink-0 p-1 transition-colors">
                 <Volume2 className={cn(
-                  "w-3.5 h-3.5",
+                  "w-4 h-4",
                   isOwn ? "text-primary-foreground/80" : "text-muted-foreground"
                 )} />
               </button>
