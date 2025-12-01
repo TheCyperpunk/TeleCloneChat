@@ -103,7 +103,7 @@ export function MessageInput({
               variant="ghost"
               data-testid="button-attach"
             >
-              <Paperclip className="h-9 w-9" />
+              <Paperclip className="h-10 w-10" />
             </Button>
           </PopoverTrigger>
           <PopoverContent side="top" align="start" className="w-auto p-2">
@@ -154,9 +154,9 @@ export function MessageInput({
           data-testid={message.trim() ? "button-send" : "button-record"}
         >
           {message.trim() ? (
-            <Send className="h-9 w-9" />
+            <Send className="h-10 w-10" />
           ) : (
-            <Mic className="h-9 w-9" />
+            <Mic className="h-10 w-10" />
           )}
         </Button>
       </div>
