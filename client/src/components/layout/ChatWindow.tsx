@@ -38,9 +38,9 @@ export function ChatWindow({
     const nextMessage = messages[index + 1];
 
     const isFirstInGroup =
-      !prevMessage || prevMessage.isOwn !== message.isOwn;
+      !prevMessage || prevMessage.isOwn !== message.isOwn || prevMessage.senderName !== message.senderName;
     const isLastInGroup =
-      !nextMessage || nextMessage.isOwn !== message.isOwn;
+      !nextMessage || nextMessage.isOwn !== message.isOwn || nextMessage.senderName !== message.senderName;
 
     acc.push({
       ...message,
@@ -91,7 +91,7 @@ export function ChatWindow({
                 {...message}
                 senderName={chat.isGroup ? message.senderName : undefined}
                 senderAvatar={chat.isGroup ? message.senderAvatar : undefined}
-                showAvatar={!message.isOwn && chat.isGroup && message.isLastInGroup}
+                showAvatar={!message.isOwn && chat.isGroup && message.isFirstInGroup}
               />
             ))
           )}
