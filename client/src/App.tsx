@@ -194,6 +194,7 @@ const mockMessages: Record<string, MessageBubbleProps[]> = {
       { type: "image", url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop" },
       { type: "image", url: "https://images.unsplash.com/photo-1517841905240-472988bababb?w=300&h=300&fit=crop" },
       { type: "image", url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=300&h=300&fit=crop" },
     ] },
     { id: "mg2", content: "Best memories!", timestamp: "2:05 PM", isOwn: true, status: "read" },
     { id: "mg3", content: "We should do a movie night soon!", timestamp: "2:10 PM", isOwn: false, senderName: "Sarah", senderAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" },
