@@ -82,28 +82,30 @@ export function MessageBubble({
               </div>
             )}
             {media.type === "video" && (
-              <div className="relative rounded-xl overflow-hidden -mx-3 -mt-2 mb-2 aspect-square group">
+              <div className="relative rounded-xl overflow-hidden -mx-3 -mt-2 mb-2" style={{ aspectRatio: '9/16' }}>
                 <img
                   src={media.url}
                   alt="Video thumbnail"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/90 hover:bg-primary transition-colors">
-                    <Play className="w-8 h-8 text-primary-foreground fill-primary-foreground" />
+                  <div className="flex items-center justify-center w-14 h-14 rounded-full bg-primary/90 hover:bg-primary transition-colors">
+                    <Play className="w-6 h-6 text-primary-foreground fill-primary-foreground" />
                   </div>
                 </div>
-                {media.duration && (
-                  <div className="absolute bottom-3 left-3 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
-                    {media.duration}
-                  </div>
-                )}
-                {media.fileSize && (
-                  <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
-                    <Download className="w-3 h-3" />
-                    {media.fileSize}
-                  </div>
-                )}
+                <div className="absolute bottom-3 left-3 flex flex-col gap-1">
+                  {media.duration && (
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
+                      {media.duration}
+                    </div>
+                  )}
+                  {media.fileSize && (
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
+                      <Download className="w-3 h-3" />
+                      {media.fileSize}
+                    </div>
+                  )}
+                </div>
                 {media.views !== undefined && (
                   <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
                     <Eye className="w-3 h-3" />
