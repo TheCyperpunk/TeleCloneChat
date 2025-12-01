@@ -82,28 +82,40 @@ export function MessageBubble({
           </span>
         )}
         {Array.isArray(media) && media.length > 0 && (
-          <div className="grid gap-1 mb-1" style={{ 
-            gridTemplateColumns: media.length === 1 ? '1fr' : media.length === 2 ? '1fr 1fr' : media.length <= 4 ? '1fr 1fr' : '1fr 1fr 1fr',
-            gridAutoRows: 'auto'
+          <div className="grid gap-1 mb-1 rounded-lg overflow-hidden" style={{ 
+            gridTemplateColumns: media.length <= 2 ? '1fr 1fr' : '1fr 1fr 1fr',
+            gridAutoRows: '80px'
           }}>
             {media.map((item, idx) => {
-              let colSpan = 1;
               let rowSpan = 1;
               
-              // Create varied grid sizes
-              if (media.length > 2) {
-                if (idx === 0 && media.length > 4) { colSpan = 1; rowSpan = 2; }
-                else if (idx === 1 && media.length === 3) { colSpan = 1; rowSpan = 2; }
-                else if (idx === 1 && media.length > 4) { colSpan = 1; }
+              // Layout pattern: 2 on top, 3 in middle rows, 2 on bottom
+              if (media.length === 3) {
+                if (idx < 2) rowSpan = 1; // top 2
+                else rowSpan = 1; // bottom 1
+              } else if (media.length === 4) {
+                if (idx < 2) rowSpan = 1; // top 2
+                else rowSpan = 1; // bottom 2
+              } else if (media.length === 5) {
+                if (idx < 2) rowSpan = 1; // top 2
+                else if (idx < 5) rowSpan = 1; // middle 3
+                else rowSpan = 1; // bottom
+              } else if (media.length === 6) {
+                if (idx < 2) rowSpan = 1; // top 2
+                else if (idx < 5) rowSpan = 1; // middle 3
+                else rowSpan = 1; // bottom 1
+              } else if (media.length >= 7) {
+                if (idx < 2) rowSpan = 1; // top 2
+                else if (idx < 5) rowSpan = 1; // middle 3
+                else if (idx < 8) rowSpan = 1; // middle-bottom 3
+                else rowSpan = 1; // bottom
               }
               
               return (
                 <div 
                   key={idx} 
-                  className="relative rounded-lg overflow-hidden group" 
+                  className="relative rounded-md overflow-hidden group cursor-pointer" 
                   style={{ 
-                    aspectRatio: '1/1',
-                    gridColumn: `span ${colSpan}`,
                     gridRow: `span ${rowSpan}`
                   }}
                 >
@@ -112,23 +124,18 @@ export function MessageBubble({
                     alt={`Media ${idx + 1}`}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-black/60 group-hover:bg-black/80 transition-colors">
-                      <Download className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
                   {item.type === "video" && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors pointer-events-none">
-                      <Play className="w-8 h-8 text-primary-foreground fill-primary-foreground opacity-80" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Play className="w-8 h-8 text-white fill-white opacity-90 drop-shadow-lg" />
                     </div>
                   )}
                   {item.type === "video" && item.duration && (
-                    <div className="absolute bottom-2 left-2 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white font-medium">
+                    <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white font-medium">
                       {item.duration}
                     </div>
                   )}
                   {item.views !== undefined && (
-                    <div className="absolute bottom-2 right-2 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white">
+                    <div className="absolute bottom-1 right-1 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white">
                       <Eye className="w-3 h-3" />
                       {item.views}
                     </div>
