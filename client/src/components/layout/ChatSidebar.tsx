@@ -131,43 +131,41 @@ export function ChatSidebar({
   };
 
   return (
-    <div className="w-96 bg-sidebar border-r border-sidebar-border flex flex-col h-full">
+    <div className="w-72 bg-sidebar border-r border-sidebar-border flex flex-col h-full">
       {/* Header */}
       <div className="p-3 border-b border-sidebar-border">
         <div className="flex items-center justify-between mb-3">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="icon"
+                variant="ghost"
+                data-testid="button-menu"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem onClick={onSettings}>
+                <Settings className="w-4 h-4 mr-2" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <LogOut className="w-4 h-4 mr-2" />
+                <span>Logout</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <h1 className="text-xl font-bold text-sidebar-foreground">xmo</h1>
-          <div className="flex items-center gap-1">
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => setShowSearch(!showSearch)}
-              data-testid="button-search"
-            >
-              <SearchIcon className="h-5 w-5" />
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  data-testid="button-menu"
-                >
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={onSettings}>
-                  <Settings className="w-4 h-4 mr-2" />
-                  <span>Settings</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  <span>Logout</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => setShowSearch(!showSearch)}
+            data-testid="button-search"
+          >
+            <SearchIcon className="h-5 w-5" />
+          </Button>
         </div>
 
         {showSearch && (
