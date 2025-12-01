@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Check, CheckCheck, Play, Link2 } from "lucide-react";
+import { Check, CheckCheck, Play, Link2, Eye, Download, Volume2 } from "lucide-react";
 import { Avatar } from "./Avatar";
+import { useState } from "react";
 
 export interface MessageBubbleProps {
   id: string;
@@ -22,6 +23,9 @@ export interface MessageBubbleProps {
     url?: string;
     title?: string;
     description?: string;
+    duration?: string;
+    fileSize?: string;
+    views?: number;
   };
 }
 
@@ -95,30 +99,101 @@ export function MessageBubble({
           {media && (
             <div className="mb-2">
               {media.type === "image" && media.url && (
-                <img 
-                  src={media.url} 
-                  alt="Message image"
-                  className="rounded-lg w-full max-h-64 object-cover"
-                />
+                <div className="rounded-xl overflow-hidden">
+                  <img 
+                    src={media.url} 
+                    alt="Message image"
+                    className="w-full max-h-80 object-cover"
+                  />
+                </div>
               )}
               {media.type === "video" && media.url && (
-                <div className="relative rounded-lg overflow-hidden bg-black/20 aspect-video">
-                  <video
+                <div className="relative rounded-xl overflow-hidden bg-black/40 aspect-video group">
+                  <img
                     src={media.url}
+                    alt="Video thumbnail"
                     className="w-full h-full object-cover"
-                    controls
                   />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
-                    <Play className="w-12 h-12" />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-colors">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/90 hover:bg-primary transition-colors">
+                      <Play className="w-6 h-6 text-primary-foreground fill-primary-foreground" />
+                    </div>
                   </div>
+                  {media.duration && (
+                    <div className="absolute bottom-2 left-2 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
+                      {media.duration}
+                    </div>
+                  )}
+                  {media.fileSize && (
+                    <div className="absolute bottom-2 right-2 flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
+                      <Download className="w-3 h-3" />
+                      {media.fileSize}
+                    </div>
+                  )}
+                  {media.views !== undefined && (
+                    <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
+                      <Eye className="w-3 h-3" />
+                      {media.views}
+                    </div>
+                  )}
                 </div>
               )}
               {media.type === "audio" && media.url && (
-                <audio 
-                  src={media.url}
-                  className="w-full rounded-lg"
-                  controls
-                />
+                <div className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-full",
+                  isOwn
+                    ? "bg-primary-foreground/20"
+                    : "bg-background border border-card-border"
+                )}>
+                  <button className={cn(
+                    "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors",
+                    isOwn
+                      ? "bg-primary-foreground/30 hover:bg-primary-foreground/40"
+                      : "bg-primary hover:bg-primary/90"
+                  )}>
+                    <Play className={cn(
+                      "w-5 h-5 fill-current",
+                      isOwn ? "text-primary-foreground" : "text-primary-foreground"
+                    )} />
+                  </button>
+                  
+                  <div className="flex-1">
+                    <svg className="w-full h-8" viewBox="0 0 100 32" preserveAspectRatio="none">
+                      {[...Array(40)].map((_, i) => {
+                        const height = Math.random() * 24 + 4;
+                        return (
+                          <rect
+                            key={i}
+                            x={i * 2.5}
+                            y={(32 - height) / 2}
+                            width="1.5"
+                            height={height}
+                            fill={isOwn ? "rgba(255,255,255,0.5)" : "rgba(42, 171, 238, 0.5)"}
+                            rx="0.75"
+                          />
+                        );
+                      })}
+                    </svg>
+                  </div>
+                  
+                  {media.duration && (
+                    <span className={cn(
+                      "text-xs font-medium flex-shrink-0 min-w-fit",
+                      isOwn ? "text-primary-foreground/70" : "text-primary"
+                    )}>
+                      {media.duration}
+                    </span>
+                  )}
+                  
+                  <button className={cn(
+                    "flex-shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+                    isOwn
+                      ? "bg-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/40"
+                      : "bg-accent/20 text-primary hover:bg-accent/30"
+                  )}>
+                    <Volume2 className="w-4 h-4" />
+                  </button>
+                </div>
               )}
               {media.type === "link" && media.url && (
                 <a
