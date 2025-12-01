@@ -239,6 +239,31 @@ const mockMessages: Record<string, MessageBubbleProps[]> = {
     { id: "bc19", content: "When should we meet to discuss it?", timestamp: "10:48 AM", isOwn: false, senderName: "Jessica", senderAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop" },
     { id: "bc20", content: "How about next Saturday at the coffee shop?", timestamp: "10:50 AM", isOwn: true, status: "read" },
   ],
+  "6": [
+    { id: "db1", content: "Hey David! Long time no chat", timestamp: "Yesterday", isOwn: true, status: "read" },
+    { id: "db2", content: "Hey! Yeah, been busy with work", timestamp: "Yesterday", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+    { id: "db3", content: "How's the new project going?", timestamp: "Yesterday", isOwn: true, status: "read" },
+    { id: "db4", content: "", timestamp: "Yesterday", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: { type: "image", url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=400&fit=crop" } },
+    { id: "db5", content: "Here's the office setup we just finished!", timestamp: "Yesterday", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+    { id: "db6", content: "Looks amazing! Really professional", timestamp: "Yesterday", isOwn: true, status: "read" },
+    { id: "db7", content: "", timestamp: "Yesterday", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: { type: "video", url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=600&fit=crop", duration: "1:50", views: 127 } },
+    { id: "db8", content: "Check out this time-lapse of the design process!", timestamp: "Yesterday", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+    { id: "db9", content: "That's so cool! The progression is amazing", timestamp: "Yesterday", isOwn: true, status: "read" },
+    { id: "db10", content: "Found this great design resource for the team", timestamp: "10:05 AM", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: { type: "link", url: "https://dribbble.com", title: "Dribbble Design Community", description: "Discover and showcase design inspiration from around the world" } },
+    { id: "db11", content: "Perfect! I'll share it with the team", timestamp: "10:10 AM", isOwn: true, status: "read" },
+    { id: "db12", content: "", timestamp: "10:15 AM", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: { type: "audio", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", duration: "2:30" } },
+    { id: "db13", content: "Just recorded some feedback on the mockups", timestamp: "10:16 AM", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+    { id: "db14", content: "Great! Will listen and get back to you", timestamp: "10:20 AM", isOwn: true, status: "read" },
+    { id: "db15", content: "", timestamp: "10:25 AM", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: [
+      { type: "image", url: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop" },
+    ] },
+    { id: "db16", content: "Gallery from the team meeting today", timestamp: "10:26 AM", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+    { id: "db17", content: "Everyone looks great! Glad the project is going well", timestamp: "10:30 AM", isOwn: true, status: "read" },
+    { id: "db18", content: "By the way, we should grab coffee soon. Catch up properly", timestamp: "10:32 AM", isOwn: false, senderName: "David", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+    { id: "db19", content: "Absolutely! This weekend?", timestamp: "10:35 AM", isOwn: true, status: "read" },
+  ],
 };
 
 function TeleChat() {
