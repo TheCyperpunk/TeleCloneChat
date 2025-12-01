@@ -184,61 +184,51 @@ export function MessageBubble({
           )}
           
           {!Array.isArray(media) && media?.type === "audio" && media?.url && (
-            <div className={cn(
-              "-mx-3 px-3 py-2 -mt-2 mb-2 flex items-center gap-2 rounded-full",
-              isOwn
-                ? "bg-primary-foreground/30"
-                : "bg-primary/20"
-            )}>
+            <div className="flex items-center gap-2 mb-2">
               <button className={cn(
-                "flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors",
+                "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors",
                 isOwn
-                  ? "bg-primary-foreground/50 hover:bg-primary-foreground/60"
+                  ? "bg-primary-foreground/40 hover:bg-primary-foreground/50"
                   : "bg-primary hover:bg-primary/90"
               )}>
                 <Play className={cn(
-                  "w-4 h-4 fill-current",
+                  "w-3.5 h-3.5 fill-current",
                   isOwn ? "text-primary-foreground" : "text-primary-foreground"
                 )} />
               </button>
               
-              <div className="flex-1 h-5 flex items-center justify-center">
-                <svg className="w-full h-full" viewBox="0 0 120 20" preserveAspectRatio="none">
-                  {[...Array(45)].map((_, i) => {
+              <div className="flex-1 h-5 flex items-center">
+                <svg className="w-full h-full" viewBox="0 0 100 20" preserveAspectRatio="none">
+                  {[...Array(35)].map((_, i) => {
                     const height = Math.random() * 16 + 2;
                     return (
                       <rect
                         key={i}
-                        x={i * 2.65}
+                        x={i * 2.85}
                         y={(20 - height) / 2}
                         width="1.8"
                         height={height}
-                        fill={isOwn ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.7)"}
-                        rx="0.9"
+                        fill={isOwn ? "rgba(255,255,255,0.6)" : "rgba(42, 171, 238, 0.6)"}
+                        rx="0.75"
                       />
                     );
                   })}
-                  {media.duration && (
-                    <text
-                      x="60"
-                      y="15"
-                      textAnchor="middle"
-                      className={cn(
-                        "text-xs font-medium",
-                        isOwn ? "fill-primary-foreground" : "fill-primary-foreground"
-                      )}
-                      fontSize="8"
-                    >
-                      {media.duration}
-                    </text>
-                  )}
                 </svg>
               </div>
               
+              {media.duration && (
+                <span className={cn(
+                  "text-xs font-medium flex-shrink-0 min-w-fit",
+                  isOwn ? "text-primary-foreground/80" : "text-muted-foreground"
+                )}>
+                  {media.duration}
+                </span>
+              )}
+              
               <button className="flex-shrink-0 p-1 transition-colors">
                 <Volume2 className={cn(
-                  "w-4 h-4",
-                  isOwn ? "text-primary-foreground" : "text-primary-foreground"
+                  "w-3.5 h-3.5",
+                  isOwn ? "text-primary-foreground/80" : "text-muted-foreground"
                 )} />
               </button>
             </div>
