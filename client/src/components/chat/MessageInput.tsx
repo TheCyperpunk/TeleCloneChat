@@ -73,7 +73,7 @@ export function MessageInput({
   ];
 
   return (
-    <div className="border-t bg-background px-2 py-2">
+    <div className="px-2 py-2">
       {replyTo && (
         <div className="flex items-center gap-2 px-3 py-2 mb-2 bg-accent/50 rounded-lg">
           <div className="flex-1 min-w-0 border-l-2 border-primary pl-2">

@@ -23,6 +23,7 @@ const mockChats = [
     bio: "Software developer. Coffee enthusiast.",
     username: "alice_dev",
     phone: "+1 234 567 8900",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
   },
   {
     id: "3",
@@ -33,6 +34,7 @@ const mockChats = [
     lastMessageStatus: "read" as const,
     bio: "Full-stack developer. Open source contributor.",
     username: "bob_codes",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
   },
   {
     id: "4",
@@ -43,6 +45,7 @@ const mockChats = [
     lastMessageStatus: "read" as const,
     bio: "UX Designer. Cat mom.",
     username: "carol_ux",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop",
   },
   {
     id: "6",
@@ -51,6 +54,7 @@ const mockChats = [
     timestamp: "Sun",
     isOnline: false,
     lastMessageStatus: "read" as const,
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
   },
   {
     id: "7",
@@ -59,6 +63,7 @@ const mockChats = [
     timestamp: "Sat",
     isOnline: true,
     lastMessageStatus: "delivered" as const,
+    avatar: "https://images.unsplash.com/photo-1517841905240-472988bababb?w=200&h=200&fit=crop",
   },
 ];
 
@@ -72,6 +77,7 @@ const mockGroups = [
     unreadCount: 12,
     isGroup: true,
     memberCount: 8,
+    avatar: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=200&h=200&fit=crop",
   },
   {
     id: "5",
@@ -81,6 +87,7 @@ const mockGroups = [
     unreadCount: 5,
     isGroup: true,
     memberCount: 6,
+    avatar: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=200&h=200&fit=crop",
   },
   {
     id: "g3",
@@ -89,6 +96,7 @@ const mockGroups = [
     timestamp: "Tue",
     isGroup: true,
     memberCount: 15,
+    avatar: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&h=200&fit=crop",
   },
   {
     id: "g4",
@@ -97,6 +105,7 @@ const mockGroups = [
     timestamp: "Wed",
     isGroup: true,
     memberCount: 8,
+    avatar: "https://images.unsplash.com/photo-150784272343-583f20270319?w=200&h=200&fit=crop",
   },
 ];
 

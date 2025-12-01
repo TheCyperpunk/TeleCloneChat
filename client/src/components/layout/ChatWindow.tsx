@@ -69,14 +69,16 @@ export function ChatWindow({
 
   return (
     <div className="flex-1 flex flex-col h-full bg-background">
-      <ChatHeader
-        {...chat}
-        onBack={onBack}
-        onProfileClick={onProfileClick}
-        showBackButton={showBackButton}
-      />
+      <div className="sticky top-0 z-20">
+        <ChatHeader
+          {...chat}
+          onBack={onBack}
+          onProfileClick={onProfileClick}
+          showBackButton={showBackButton}
+        />
+      </div>
 
-      <ScrollArea className="flex-1" ref={scrollRef}>
+      <ScrollArea className="flex-1 overflow-hidden" ref={scrollRef}>
         <div className="py-4 min-h-full flex flex-col justify-end">
           {messages.length === 0 ? (
             <div className="flex-1 flex items-center justify-center text-muted-foreground">
@@ -94,11 +96,13 @@ export function ChatWindow({
         </div>
       </ScrollArea>
 
-      <MessageInput
-        onSend={handleSend}
-        replyTo={replyTo}
-        onCancelReply={() => setReplyTo(undefined)}
-      />
+      <div className="sticky bottom-0 z-20 bg-background border-t">
+        <MessageInput
+          onSend={handleSend}
+          replyTo={replyTo}
+          onCancelReply={() => setReplyTo(undefined)}
+        />
+      </div>
     </div>
   );
 }
