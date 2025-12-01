@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-export type Category = "all" | "stories" | "groups" | "explore" | "channels" | "bots" | "saved";
+export type Category = "all" | "groups";
 
 interface CategoryTabsProps {
   activeCategory: Category;
@@ -11,12 +11,7 @@ interface CategoryTabsProps {
 
 const categories: { id: Category; label: string }[] = [
   { id: "all", label: "All" },
-  { id: "stories", label: "Stories" },
   { id: "groups", label: "Groups" },
-  { id: "explore", label: "Explore" },
-  { id: "channels", label: "Channels" },
-  { id: "bots", label: "Bots" },
-  { id: "saved", label: "Saved" },
 ];
 
 export function CategoryTabs({

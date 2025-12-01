@@ -103,7 +103,6 @@ export function ChatSidebar({
 
   const unreadCounts: Partial<Record<Category, number>> = {
     all: allChats.reduce((sum, c) => sum + (c.unreadCount || 0), 0),
-    stories: (stories || []).filter((s) => s.hasStory && !s.isViewed).length,
     groups: (groups || []).reduce((sum, g) => sum + (g.unreadCount || 0), 0),
   };
 
@@ -207,58 +206,8 @@ export function ChatSidebar({
       case "all":
         return renderAllContent();
 
-      case "stories":
-        return (
-          <StoriesView
-            stories={stories}
-            currentUserName={currentUserName}
-            currentUserAvatar={currentUserAvatar}
-            hasOwnStory={hasOwnStory}
-            onStoryClick={onStoryClick}
-            onAddStory={onAddStory}
-          />
-        );
-
       case "groups":
         return renderChatList(filteredGroups);
-
-      case "explore":
-        return (
-          <ExploreView
-            posts={explorePosts}
-            onPostClick={(postId) => console.log("View post:", postId)}
-          />
-        );
-
-      case "channels":
-        return (
-          <ChannelsView
-            channels={channels}
-            selectedChannelId={selectedChatId}
-            onChannelSelect={onChatSelect}
-            onCreateChannel={onNewChannel}
-            onSubscribe={onSubscribeChannel}
-          />
-        );
-
-      case "bots":
-        return (
-          <BotsView
-            bots={bots}
-            selectedBotId={selectedChatId}
-            onBotSelect={onChatSelect}
-            onStartBot={onStartBot}
-          />
-        );
-
-      case "saved":
-        return (
-          <SavedView
-            messages={savedMessages}
-            onMessageClick={(msgId) => console.log("View saved:", msgId)}
-            onDeleteSaved={onDeleteSavedMessage}
-          />
-        );
 
       default:
         return null;
