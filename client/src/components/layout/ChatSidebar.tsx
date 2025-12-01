@@ -169,14 +169,6 @@ export function ChatSidebar({
 
       {/* Footer Settings */}
       <div className="p-3 border-t border-sidebar-border flex gap-2 mt-auto">
-        <Button
-          size="icon"
-          variant="ghost"
-          onClick={onSettings}
-          data-testid="button-settings"
-        >
-          <Settings className="h-5 w-5" />
-        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -188,6 +180,11 @@ export function ChatSidebar({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
+            <DropdownMenuItem onClick={onSettings}>
+              <Settings className="w-4 h-4 mr-2" />
+              <span>Settings</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem>
               <LogOut className="w-4 h-4 mr-2" />
               <span>Logout</span>
