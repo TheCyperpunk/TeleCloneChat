@@ -152,13 +152,6 @@ export function MessageBubble({
                     )}
                   </div>
                 )}
-                
-                {media.views !== undefined && (
-                  <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2 py-1 rounded-md bg-black/60 text-xs text-white">
-                    <Eye className="w-3 h-3" />
-                    <span>{media.views}</span>
-                  </div>
-                )}
               </div>
             )}
           </>
