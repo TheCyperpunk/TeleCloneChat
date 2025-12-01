@@ -58,9 +58,16 @@ export function MessageBubble({
       )}
       data-testid={`message-${id}`}
     >
-      {!isOwn && showAvatar && (
-        <div className="flex-shrink-0 w-8 flex items-start pt-1">
-          <Avatar src={senderAvatar} name={senderName || "User"} size="sm" />
+      {!isOwn && (
+        <div className={cn(
+          "flex-shrink-0 w-8 flex items-start pt-1",
+          !showAvatar && "opacity-0"
+        )}>
+          {showAvatar ? (
+            <Avatar src={senderAvatar} name={senderName || "User"} size="sm" />
+          ) : (
+            <div className="w-8 h-8" />
+          )}
         </div>
       )}
       <div

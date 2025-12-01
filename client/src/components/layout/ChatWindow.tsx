@@ -89,7 +89,7 @@ export function ChatWindow({
               <MessageBubble
                 key={message.id}
                 {...message}
-                showAvatar={!message.isOwn && (chat.isGroup || message.isLastInGroup)}
+                showAvatar={!message.isOwn && chat.isGroup && message.isLastInGroup}
               />
             ))
           )}
