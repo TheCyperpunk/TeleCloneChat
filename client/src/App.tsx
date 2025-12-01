@@ -213,6 +213,32 @@ const mockMessages: Record<string, MessageBubbleProps[]> = {
     { id: "mg17", content: "By the lake near campus. You should come next time!", timestamp: "2:42 PM", isOwn: false, senderName: "Emma", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
     { id: "mg18", content: "Definitely will! This group is awesome", timestamp: "2:45 PM", isOwn: true, status: "read" },
   ],
+  "g4": [
+    { id: "bc1", content: "Hey everyone! Let's discuss The Great Gatsby", timestamp: "10:00 AM", isOwn: false, senderName: "Alice", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+    { id: "bc2", content: "I loved the writing style! So elegant", timestamp: "10:05 AM", isOwn: false, senderName: "Mark", senderAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop" },
+    { id: "bc3", content: "The symbolism was incredible", timestamp: "10:08 AM", isOwn: true, status: "read" },
+    { id: "bc4", content: "", timestamp: "10:10 AM", isOwn: false, senderName: "Sarah", senderAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop", media: { type: "image", url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=500&h=400&fit=crop" } },
+    { id: "bc5", content: "Here's a photo of my copy with notes!", timestamp: "10:11 AM", isOwn: false, senderName: "Sarah", senderAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" },
+    { id: "bc6", content: "Great notes! I'm highlighting the same parts", timestamp: "10:15 AM", isOwn: true, status: "read" },
+    { id: "bc7", content: "I found an amazing article about Fitzgerald", timestamp: "10:18 AM", isOwn: false, senderName: "Mark", senderAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop", media: { type: "link", url: "https://www.britannica.com", title: "F. Scott Fitzgerald Biography", description: "Learn about the life and works of F. Scott Fitzgerald, author of The Great Gatsby" } },
+    { id: "bc8", content: "Thanks for sharing! Will read it tonight", timestamp: "10:22 AM", isOwn: true, status: "read" },
+    { id: "bc9", content: "", timestamp: "10:25 AM", isOwn: false, senderName: "Jessica", senderAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop", media: { type: "video", url: "https://images.unsplash.com/photo-1505232585604-7cc1b2c7b47f?w=500&h=600&fit=crop", duration: "4:15" } },
+    { id: "bc10", content: "Here's a great film adaptation scene!", timestamp: "10:26 AM", isOwn: false, senderName: "Jessica", senderAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop" },
+    { id: "bc11", content: "Wow! That cinematography is beautiful", timestamp: "10:30 AM", isOwn: true, status: "read" },
+    { id: "bc12", content: "", timestamp: "10:32 AM", isOwn: false, senderName: "Alice", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: { type: "audio", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", duration: "3:45" } },
+    { id: "bc13", content: "Recorded a quick book review, check it out!", timestamp: "10:33 AM", isOwn: false, senderName: "Alice", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+    { id: "bc14", content: "Love this! Your voice is so expressive", timestamp: "10:38 AM", isOwn: true, status: "read" },
+    { id: "bc15", content: "Next month we're reading 'Pride and Prejudice'!", timestamp: "10:40 AM", isOwn: false, senderName: "Mark", senderAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop" },
+    { id: "bc16", content: "", timestamp: "10:42 AM", isOwn: true, status: "read", media: [
+      { type: "image", url: "https://images.unsplash.com/photo-1507842217343-583f20270319?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop" },
+    ] },
+    { id: "bc17", content: "I found different editions we can compare!", timestamp: "10:43 AM", isOwn: true, status: "read" },
+    { id: "bc18", content: "Great idea! I love comparing different versions", timestamp: "10:45 AM", isOwn: false, senderName: "Sarah", senderAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" },
+    { id: "bc19", content: "When should we meet to discuss it?", timestamp: "10:48 AM", isOwn: false, senderName: "Jessica", senderAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop" },
+    { id: "bc20", content: "How about next Saturday at the coffee shop?", timestamp: "10:50 AM", isOwn: true, status: "read" },
+  ],
 };
 
 function TeleChat() {
