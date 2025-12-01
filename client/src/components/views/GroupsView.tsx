@@ -47,6 +47,7 @@ export function GroupsView({
               <ChatListItem
                 key={group.id}
                 {...group}
+                type="group"
                 isSelected={group.id === selectedGroupId}
                 onClick={() => onGroupSelect(group.id)}
               />

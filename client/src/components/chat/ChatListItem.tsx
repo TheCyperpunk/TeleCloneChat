@@ -1,6 +1,6 @@
 import { Avatar } from "./Avatar";
 import { cn } from "@/lib/utils";
-import { Check, CheckCheck, Users } from "lucide-react";
+import { Check, CheckCheck, Users, Users2 } from "lucide-react";
 
 export interface ChatListItemProps {
   id: string;
@@ -16,6 +16,7 @@ export interface ChatListItemProps {
   isMuted?: boolean;
   isPinned?: boolean;
   lastMessageStatus?: "sent" | "delivered" | "read";
+  type?: "chat" | "group" | "channel" | "bot";
   onClick?: () => void;
 }
 
@@ -32,8 +33,24 @@ export function ChatListItem({
   isGroup = false,
   isMuted = false,
   lastMessageStatus,
+  type = "chat",
   onClick,
 }: ChatListItemProps) {
+  const getTypeLabel = () => {
+    switch (type) {
+      case "group":
+        return { label: "Group", icon: Users2 };
+      case "channel":
+        return { label: "Channel", icon: null };
+      case "bot":
+        return { label: "Bot", icon: null };
+      default:
+        return null;
+    }
+  };
+
+  const typeInfo = getTypeLabel();
+
   return (
     <div
       onClick={onClick}
@@ -59,7 +76,19 @@ export function ChatListItem({
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-3 mb-0.5">
-          <span className="font-semibold text-sm truncate">{name}</span>
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <span className="font-semibold text-sm truncate">{name}</span>
+            {typeInfo && (
+              <span className="flex items-center gap-1 px-2 py-0.5 bg-primary/20 rounded-md flex-shrink-0">
+                {typeInfo.icon && (
+                  <typeInfo.icon className="h-3 w-3 text-primary" />
+                )}
+                <span className="text-xs font-medium text-primary">
+                  {typeInfo.label}
+                </span>
+              </span>
+            )}
+          </div>
           {timestamp && (
             <span className="text-xs text-muted-foreground flex-shrink-0 ml-2">
               {timestamp}

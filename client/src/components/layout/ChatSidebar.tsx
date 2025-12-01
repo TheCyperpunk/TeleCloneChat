@@ -158,6 +158,7 @@ export function ChatSidebar({
                   <ChatListItem
                     key={chat.id}
                     {...chat}
+                    type={item.type as "chat" | "group"}
                     isSelected={chat.id === selectedChatId}
                     onClick={() => onChatSelect(chat.id)}
                   />
@@ -173,6 +174,7 @@ export function ChatSidebar({
                     lastMessage={channel.description}
                     timestamp={channel.lastPostTime || ""}
                     unreadCount={0}
+                    type="channel"
                     isSelected={channel.id === selectedChatId}
                     onClick={() => onChatSelect(channel.id)}
                   />
@@ -188,6 +190,7 @@ export function ChatSidebar({
                     lastMessage={bot.username}
                     timestamp="Bot"
                     unreadCount={0}
+                    type="bot"
                     isSelected={bot.id === selectedChatId}
                     onClick={() => onChatSelect(bot.id)}
                   />
