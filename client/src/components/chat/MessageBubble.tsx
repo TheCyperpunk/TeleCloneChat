@@ -166,6 +166,8 @@ export function MessageBubble({
             "px-3 py-2 relative",
             isOwn
               ? "bg-primary text-primary-foreground rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl"
+              : !Array.isArray(media) && media?.type === "audio" && media?.url
+              ? "bg-card border border-card-border rounded-3xl"
               : "bg-card border border-card-border rounded-tr-2xl rounded-br-2xl rounded-bl-2xl"
           )}
         >
@@ -184,7 +186,7 @@ export function MessageBubble({
           )}
           
           {!Array.isArray(media) && media?.type === "audio" && media?.url && (
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-0 py-1">
               <button className={cn(
                 "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors",
                 isOwn
