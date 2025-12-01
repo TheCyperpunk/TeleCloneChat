@@ -70,6 +70,51 @@ export function MessageBubble({
             {senderName}
           </span>
         )}
+        {(media?.type === "image" || media?.type === "video") && media?.url && (
+          <>
+            {media.type === "image" && (
+              <div className="rounded-xl overflow-hidden -mx-3 -mt-2 mb-2">
+                <img 
+                  src={media.url} 
+                  alt="Message image"
+                  className="w-full max-h-80 object-cover"
+                />
+              </div>
+            )}
+            {media.type === "video" && (
+              <div className="relative rounded-xl overflow-hidden -mx-3 -mt-2 mb-2 aspect-square group">
+                <img
+                  src={media.url}
+                  alt="Video thumbnail"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-primary/90 hover:bg-primary transition-colors">
+                    <Play className="w-8 h-8 text-primary-foreground fill-primary-foreground" />
+                  </div>
+                </div>
+                {media.duration && (
+                  <div className="absolute bottom-3 left-3 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
+                    {media.duration}
+                  </div>
+                )}
+                {media.fileSize && (
+                  <div className="absolute bottom-3 right-3 flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
+                    <Download className="w-3 h-3" />
+                    {media.fileSize}
+                  </div>
+                )}
+                {media.views !== undefined && (
+                  <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
+                    <Eye className="w-3 h-3" />
+                    {media.views}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
+        
         <div
           className={cn(
             "px-3 py-2 relative",
@@ -96,131 +141,83 @@ export function MessageBubble({
             </div>
           )}
           
-          {media && (
-            <div className="mb-2">
-              {media.type === "image" && media.url && (
-                <div className="rounded-xl overflow-hidden">
-                  <img 
-                    src={media.url} 
-                    alt="Message image"
-                    className="w-full max-h-80 object-cover"
-                  />
-                </div>
-              )}
-              {media.type === "video" && media.url && (
-                <div className="relative rounded-xl overflow-hidden bg-black/40 aspect-video group">
-                  <img
-                    src={media.url}
-                    alt="Video thumbnail"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-colors">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/90 hover:bg-primary transition-colors">
-                      <Play className="w-6 h-6 text-primary-foreground fill-primary-foreground" />
-                    </div>
-                  </div>
-                  {media.duration && (
-                    <div className="absolute bottom-2 left-2 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
-                      {media.duration}
-                    </div>
-                  )}
-                  {media.fileSize && (
-                    <div className="absolute bottom-2 right-2 flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
-                      <Download className="w-3 h-3" />
-                      {media.fileSize}
-                    </div>
-                  )}
-                  {media.views !== undefined && (
-                    <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-md bg-black/70 text-xs text-white">
-                      <Eye className="w-3 h-3" />
-                      {media.views}
-                    </div>
-                  )}
-                </div>
-              )}
-              {media.type === "audio" && media.url && (
-                <div className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-full",
-                  isOwn
-                    ? "bg-primary-foreground/20"
-                    : "bg-background border border-card-border"
+          {media?.type === "audio" && media?.url && (
+            <div className="flex items-center gap-2 mb-2 -mx-3 px-2 -mt-2">
+              <button className={cn(
+                "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors",
+                isOwn
+                  ? "bg-primary-foreground/40 hover:bg-primary-foreground/50"
+                  : "bg-primary hover:bg-primary/90"
+              )}>
+                <Play className={cn(
+                  "w-5 h-5 fill-current",
+                  isOwn ? "text-primary-foreground" : "text-primary-foreground"
+                )} />
+              </button>
+              
+              <div className="flex-1 h-6">
+                <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
+                  {[...Array(40)].map((_, i) => {
+                    const height = Math.random() * 20 + 2;
+                    return (
+                      <rect
+                        key={i}
+                        x={i * 2.5}
+                        y={(24 - height) / 2}
+                        width="1.5"
+                        height={height}
+                        fill={isOwn ? "rgba(255,255,255,0.6)" : "rgba(42, 171, 238, 0.6)"}
+                        rx="0.75"
+                      />
+                    );
+                  })}
+                </svg>
+              </div>
+              
+              {media.duration && (
+                <span className={cn(
+                  "text-xs font-medium flex-shrink-0 min-w-fit px-1",
+                  isOwn ? "text-primary-foreground/80" : "text-primary"
                 )}>
-                  <button className={cn(
-                    "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors",
-                    isOwn
-                      ? "bg-primary-foreground/30 hover:bg-primary-foreground/40"
-                      : "bg-primary hover:bg-primary/90"
-                  )}>
-                    <Play className={cn(
-                      "w-5 h-5 fill-current",
-                      isOwn ? "text-primary-foreground" : "text-primary-foreground"
-                    )} />
-                  </button>
-                  
-                  <div className="flex-1">
-                    <svg className="w-full h-8" viewBox="0 0 100 32" preserveAspectRatio="none">
-                      {[...Array(40)].map((_, i) => {
-                        const height = Math.random() * 24 + 4;
-                        return (
-                          <rect
-                            key={i}
-                            x={i * 2.5}
-                            y={(32 - height) / 2}
-                            width="1.5"
-                            height={height}
-                            fill={isOwn ? "rgba(255,255,255,0.5)" : "rgba(42, 171, 238, 0.5)"}
-                            rx="0.75"
-                          />
-                        );
-                      })}
-                    </svg>
+                  {media.duration}
+                </span>
+              )}
+              
+              <button className="flex-shrink-0 p-1.5 transition-colors">
+                <Volume2 className={cn(
+                  "w-4 h-4",
+                  isOwn ? "text-primary-foreground" : "text-primary"
+                )} />
+              </button>
+            </div>
+          )}
+          
+          {media?.type === "link" && media?.url && (
+            <div className="mb-2">
+              <a
+                href={media.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "block p-2 rounded-lg border",
+                  isOwn
+                    ? "bg-primary-foreground/10 border-primary-foreground/20"
+                    : "bg-background border-card-border"
+                )}
+              >
+                <div className="flex items-start gap-2">
+                  <Link2 className="w-4 h-4 flex-shrink-0 mt-1" />
+                  <div className="min-w-0">
+                    {media.title && (
+                      <p className="font-medium text-sm truncate">{media.title}</p>
+                    )}
+                    {media.description && (
+                      <p className="text-xs opacity-75 truncate">{media.description}</p>
+                    )}
+                    <p className="text-xs opacity-50 truncate">{new URL(media.url).hostname}</p>
                   </div>
-                  
-                  {media.duration && (
-                    <span className={cn(
-                      "text-xs font-medium flex-shrink-0 min-w-fit",
-                      isOwn ? "text-primary-foreground/70" : "text-primary"
-                    )}>
-                      {media.duration}
-                    </span>
-                  )}
-                  
-                  <button className={cn(
-                    "flex-shrink-0 px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
-                    isOwn
-                      ? "bg-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/40"
-                      : "bg-accent/20 text-primary hover:bg-accent/30"
-                  )}>
-                    <Volume2 className="w-4 h-4" />
-                  </button>
                 </div>
-              )}
-              {media.type === "link" && media.url && (
-                <a
-                  href={media.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "block p-2 rounded-lg border",
-                    isOwn
-                      ? "bg-primary-foreground/10 border-primary-foreground/20"
-                      : "bg-background border-card-border"
-                  )}
-                >
-                  <div className="flex items-start gap-2">
-                    <Link2 className="w-4 h-4 flex-shrink-0 mt-1" />
-                    <div className="min-w-0">
-                      {media.title && (
-                        <p className="font-medium text-sm truncate">{media.title}</p>
-                      )}
-                      {media.description && (
-                        <p className="text-xs opacity-75 truncate">{media.description}</p>
-                      )}
-                      <p className="text-xs opacity-50 truncate">{new URL(media.url).hostname}</p>
-                    </div>
-                  </div>
-                </a>
-              )}
+              </a>
             </div>
           )}
           
