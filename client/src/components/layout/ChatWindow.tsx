@@ -89,6 +89,8 @@ export function ChatWindow({
               <MessageBubble
                 key={message.id}
                 {...message}
+                senderName={chat.isGroup ? message.senderName : undefined}
+                senderAvatar={chat.isGroup ? message.senderAvatar : undefined}
                 showAvatar={!message.isOwn && chat.isGroup && message.isLastInGroup}
               />
             ))
