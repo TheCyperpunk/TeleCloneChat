@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Check, CheckCheck, Play, Link2, Eye, Download, Volume2, X, Pause, Volume1 } from "lucide-react";
+import { Check, CheckCheck, Play, Link2, Eye, Download, X, Pause } from "lucide-react";
 import { Avatar } from "./Avatar";
 import { useState, useRef, useEffect } from "react";
 
@@ -53,7 +53,6 @@ export function MessageBubble({
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const toggleAudio = () => {
@@ -73,11 +72,6 @@ export function MessageBubble({
       audioRef.current.currentTime = newTime;
       setCurrentTime(newTime);
     }
-  };
-
-  const handleVolumeChange = (newVolume: number) => {
-    setVolume(newVolume);
-    if (audioRef.current) audioRef.current.volume = newVolume;
   };
 
   const formatTime = (time: number) => {
@@ -306,15 +300,30 @@ export function MessageBubble({
                     )}
                   </button>
                 
-                  <div className="flex-1 h-1 bg-black/20 rounded-full cursor-pointer" onClick={(e) => {
+                  <div className="flex-1 h-6 flex items-end gap-0.5 cursor-pointer" onClick={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
                     const newTime = (e.clientX - rect.left) / rect.width * duration;
                     handleSeek(newTime);
-                  }}>
-                    <div 
-                      className="h-full bg-current rounded-full transition-all"
-                      style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
-                    />
+                  }} data-testid={`waveform-audio-${id}`}>
+                    {[...Array(25)].map((_, i) => {
+                      const baseHeight = Math.random() * 16 + 4;
+                      const progress = duration ? (currentTime / duration) * 100 : 0;
+                      const barProgress = (i / 25) * 100;
+                      const isPlayed = barProgress <= progress;
+                      
+                      return (
+                        <div
+                          key={i}
+                          className={cn(
+                            "flex-1 rounded-sm transition-colors",
+                            isPlayed 
+                              ? (isOwn ? "bg-primary-foreground" : "bg-primary")
+                              : (isOwn ? "bg-primary-foreground/30" : "bg-primary/30")
+                          )}
+                          style={{ height: `${baseHeight}px` }}
+                        />
+                      );
+                    })}
                   </div>
                   
                   <span className={cn(
@@ -323,20 +332,6 @@ export function MessageBubble({
                   )}>
                     {formatTime(currentTime)} / {formatTime(duration)}
                   </span>
-                </div>
-                
-                <div className="flex items-center gap-1.5">
-                  <Volume1 className={cn("w-4 h-4", isOwn ? "text-primary-foreground/80" : "text-muted-foreground")} />
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={volume}
-                    onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-                    className="flex-1 h-1 rounded-full cursor-pointer accent-current"
-                    data-testid={`slider-volume-${id}`}
-                  />
                 </div>
               </div>
             </>
