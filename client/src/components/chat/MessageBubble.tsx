@@ -52,8 +52,8 @@ export function MessageBubble({
   return (
     <div
       className={cn(
-        "flex gap-2 px-4",
-        isOwn ? "justify-end" : "justify-start",
+        "flex gap-2",
+        isOwn ? "justify-end pr-4" : "justify-start pl-4",
         isLastInGroup ? "mb-2" : "mb-0.5"
       )}
       data-testid={`message-${id}`}
