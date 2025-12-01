@@ -315,7 +315,7 @@ export function MessageBubble({
                         <div
                           key={i}
                           className={cn(
-                            "flex-1 rounded-sm transition-colors",
+                            "flex-1 transition-colors",
                             isPlayed 
                               ? (isOwn ? "bg-primary-foreground" : "bg-primary")
                               : (isOwn ? "bg-primary-foreground/30" : "bg-primary/30")
