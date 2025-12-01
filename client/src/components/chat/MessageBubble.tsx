@@ -61,7 +61,7 @@ export function MessageBubble({
       )}
       <div
         className={cn(
-          "max-w-[70%] md:max-w-md",
+          "w-full max-w-sm",
           !isOwn && showAvatar && !isLastInGroup && "ml-10"
         )}
       >
@@ -173,15 +173,6 @@ export function MessageBubble({
                   })}
                 </svg>
               </div>
-              
-              {media.duration && (
-                <span className={cn(
-                  "text-xs font-medium flex-shrink-0 min-w-fit px-1",
-                  isOwn ? "text-primary-foreground/80" : "text-primary"
-                )}>
-                  {media.duration}
-                </span>
-              )}
               
               <button className="flex-shrink-0 p-1.5 transition-colors">
                 <Volume2 className={cn(
