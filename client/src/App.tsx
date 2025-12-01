@@ -127,7 +127,7 @@ const mockMessages: Record<string, MessageBubbleProps[]> = {
     { id: "m2", content: "Pretty good! Just finished that project.", timestamp: "2:31 PM", isOwn: true, status: "read" },
     { id: "m3", content: "Check out this sunset photo!", timestamp: "2:32 PM", isOwn: false, senderName: "Alice", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: { type: "image", url: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=500&h=400&fit=crop" } },
     { id: "m4", content: "Wow, that's beautiful!", timestamp: "2:33 PM", isOwn: true, status: "read" },
-    { id: "m5", content: "Here's a voice note for you", timestamp: "2:34 PM", isOwn: false, senderName: "Alice", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: { type: "audio", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", duration: "0:30" } },
+    { id: "m5", content: "Here's a voice note for you", timestamp: "2:34 PM", isOwn: false, senderName: "Alice", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop", media: { type: "audio", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", duration: "0:45" } },
     { id: "m6", content: "Are you coming to the party tonight?", timestamp: "2:35 PM", isOwn: false, senderName: "Alice", senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
     { id: "m7", content: "Yes! I'll be there!", timestamp: "2:36 PM", isOwn: true, status: "read" },
   ],

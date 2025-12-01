@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Check, CheckCheck, Play, Link2, Eye, Download, Volume2, X } from "lucide-react";
+import { Check, CheckCheck, Play, Link2, Eye, Download, Volume2, X, Pause } from "lucide-react";
 import { Avatar } from "./Avatar";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export interface MessageBubbleProps {
   id: string;
@@ -50,6 +50,31 @@ export function MessageBubble({
   media,
 }: MessageBubbleProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const toggleAudio = () => {
+    if (!audioRef.current || !(!Array.isArray(media) && media?.type === "audio" && media?.url)) return;
+    
+    if (playingAudio === id && !audioRef.current.paused) {
+      audioRef.current.pause();
+      setPlayingAudio(null);
+    } else {
+      audioRef.current.play();
+      setPlayingAudio(id);
+    }
+  };
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.addEventListener("ended", () => setPlayingAudio(null));
+    }
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.removeEventListener("ended", () => setPlayingAudio(null));
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -224,18 +249,31 @@ export function MessageBubble({
           )}
           
           {!Array.isArray(media) && media?.type === "audio" && media?.url && (
-            <div className="flex items-center gap-2.5 my-1">
-              <button className={cn(
-                "flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors",
-                isOwn
-                  ? "bg-primary-foreground/40 hover:bg-primary-foreground/50"
-                  : "bg-primary hover:bg-primary/90"
-              )}>
-                <Play className={cn(
-                  "w-4 h-4 fill-current",
-                  isOwn ? "text-primary-foreground" : "text-primary-foreground"
-                )} />
-              </button>
+            <>
+              <audio ref={audioRef} src={media.url} />
+              <div className="flex items-center gap-2.5 my-1">
+                <button 
+                  onClick={toggleAudio}
+                  className={cn(
+                    "flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors",
+                    isOwn
+                      ? "bg-primary-foreground/40 hover:bg-primary-foreground/50"
+                      : "bg-primary hover:bg-primary/90"
+                  )}
+                  data-testid={`button-play-audio-${id}`}
+                >
+                  {playingAudio === id ? (
+                    <Pause className={cn(
+                      "w-4 h-4 fill-current",
+                      isOwn ? "text-primary-foreground" : "text-primary-foreground"
+                    )} />
+                  ) : (
+                    <Play className={cn(
+                      "w-4 h-4 fill-current",
+                      isOwn ? "text-primary-foreground" : "text-primary-foreground"
+                    )} />
+                  )}
+                </button>
               
               <div className="flex-1 h-6 flex items-center">
                 <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
@@ -271,7 +309,8 @@ export function MessageBubble({
                   isOwn ? "text-primary-foreground/80" : "text-muted-foreground"
                 )} />
               </button>
-            </div>
+              </div>
+            </>
           )}
           
           {!Array.isArray(media) && media?.type === "link" && media?.url && (
