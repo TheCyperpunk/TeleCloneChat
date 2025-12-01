@@ -162,6 +162,17 @@ const mockMessages: Record<string, MessageBubbleProps[]> = {
     { id: "m29", content: "Family recipe for the cake", timestamp: "9:15 AM", isOwn: false, senderName: "Mom", media: { type: "link", url: "https://www.allrecipes.com", title: "Chocolate Cake Recipe", description: "Delicious homemade chocolate cake" } },
     { id: "m30", content: "Perfect! Can't wait to taste it", timestamp: "9:20 AM", isOwn: true, status: "read" },
   ],
+  "g3": [
+    { id: "mg1", content: "Check out these photos from the reunion!", timestamp: "2:00 PM", isOwn: false, senderName: "Jake", media: [
+      { type: "image", url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1517841905240-472988bababb?w=300&h=300&fit=crop" },
+      { type: "image", url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop" },
+    ] },
+    { id: "mg2", content: "Best memories!", timestamp: "2:05 PM", isOwn: true, status: "read" },
+  ],
 };
 
 function TeleChat() {

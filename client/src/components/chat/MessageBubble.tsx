@@ -26,7 +26,13 @@ export interface MessageBubbleProps {
     duration?: string;
     fileSize?: string;
     views?: number;
-  };
+  } | Array<{
+    type: "image" | "video";
+    url?: string;
+    duration?: string;
+    fileSize?: string;
+    views?: number;
+  }>;
 }
 
 export function MessageBubble({
@@ -70,7 +76,39 @@ export function MessageBubble({
             {senderName}
           </span>
         )}
-        {(media?.type === "image" || media?.type === "video") && media?.url && (
+        {Array.isArray(media) && media.length > 0 && (
+          <div className="grid gap-1 -mx-3 -mt-2 mb-2" style={{ gridTemplateColumns: media.length === 1 ? '1fr' : media.length === 2 ? '1fr 1fr' : '1fr 1fr 1fr' }}>
+            {media.map((item, idx) => (
+              <div key={idx} className="relative rounded-lg overflow-hidden group" style={{ aspectRatio: '1/1' }}>
+                <img
+                  src={item.url}
+                  alt={`Media ${idx + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                {item.type === "video" && (
+                  <>
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors">
+                      <Play className="w-8 h-8 text-primary-foreground fill-primary-foreground opacity-80" />
+                    </div>
+                    {item.duration && (
+                      <div className="absolute bottom-2 left-2 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white font-medium">
+                        {item.duration}
+                      </div>
+                    )}
+                  </>
+                )}
+                {item.views !== undefined && (
+                  <div className="absolute bottom-2 right-2 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white">
+                    <Eye className="w-3 h-3" />
+                    {item.views}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        
+        {!Array.isArray(media) && (media?.type === "image" || media?.type === "video") && media?.url && (
           <>
             {media.type === "image" && (
               <div className="rounded-xl overflow-hidden -mx-3 -mt-2 mb-2">
@@ -144,12 +182,12 @@ export function MessageBubble({
             </div>
           )}
           
-          {media?.type === "audio" && media?.url && (
-            <div className="flex items-center gap-2 mb-2 -mx-3 px-2 -mt-2">
+          {!Array.isArray(media) && media?.type === "audio" && media?.url && (
+            <div className="flex items-center gap-2 -mx-3 px-3 py-2 -mt-2 mb-2 bg-black/10 rounded-lg">
               <button className={cn(
                 "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors",
                 isOwn
-                  ? "bg-primary-foreground/40 hover:bg-primary-foreground/50"
+                  ? "bg-primary-foreground/30 hover:bg-primary-foreground/40"
                   : "bg-primary hover:bg-primary/90"
               )}>
                 <Play className={cn(
@@ -195,7 +233,7 @@ export function MessageBubble({
             </div>
           )}
           
-          {media?.type === "link" && media?.url && (
+          {!Array.isArray(media) && media?.type === "link" && media?.url && (
             <div className="mb-2">
               <a
                 href={media.url}
