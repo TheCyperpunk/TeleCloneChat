@@ -271,7 +271,7 @@ export function MessageBubble({
               {content}
             </p>
           )}
-          {(!Array.isArray(media) && media?.type === "video") ? null : (
+          {(!Array.isArray(media) && (media?.type === "video" || media?.type === "image")) ? null : (
             <div
               className={cn(
                 "flex items-center justify-end gap-1 mt-1 -mb-0.5",
