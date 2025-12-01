@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Check, CheckCheck } from "lucide-react";
+import { Check, CheckCheck, Play, Link2 } from "lucide-react";
 import { Avatar } from "./Avatar";
 
 export interface MessageBubbleProps {
@@ -17,6 +17,12 @@ export interface MessageBubbleProps {
     name: string;
     content: string;
   };
+  media?: {
+    type: "image" | "video" | "audio" | "link";
+    url?: string;
+    title?: string;
+    description?: string;
+  };
 }
 
 export function MessageBubble({
@@ -31,6 +37,7 @@ export function MessageBubble({
   isFirstInGroup = true,
   isLastInGroup = true,
   replyTo,
+  media,
 }: MessageBubbleProps) {
   return (
     <div
@@ -84,9 +91,69 @@ export function MessageBubble({
               <span className="line-clamp-1">{replyTo.content}</span>
             </div>
           )}
-          <p className="text-[15px] leading-relaxed whitespace-pre-wrap break-words">
-            {content}
-          </p>
+          
+          {media && (
+            <div className="mb-2">
+              {media.type === "image" && media.url && (
+                <img 
+                  src={media.url} 
+                  alt="Message image"
+                  className="rounded-lg w-full max-h-64 object-cover"
+                />
+              )}
+              {media.type === "video" && media.url && (
+                <div className="relative rounded-lg overflow-hidden bg-black/20 aspect-video">
+                  <video
+                    src={media.url}
+                    className="w-full h-full object-cover"
+                    controls
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
+                    <Play className="w-12 h-12" />
+                  </div>
+                </div>
+              )}
+              {media.type === "audio" && media.url && (
+                <audio 
+                  src={media.url}
+                  className="w-full rounded-lg"
+                  controls
+                />
+              )}
+              {media.type === "link" && media.url && (
+                <a
+                  href={media.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "block p-2 rounded-lg border",
+                    isOwn
+                      ? "bg-primary-foreground/10 border-primary-foreground/20"
+                      : "bg-background border-card-border"
+                  )}
+                >
+                  <div className="flex items-start gap-2">
+                    <Link2 className="w-4 h-4 flex-shrink-0 mt-1" />
+                    <div className="min-w-0">
+                      {media.title && (
+                        <p className="font-medium text-sm truncate">{media.title}</p>
+                      )}
+                      {media.description && (
+                        <p className="text-xs opacity-75 truncate">{media.description}</p>
+                      )}
+                      <p className="text-xs opacity-50 truncate">{new URL(media.url).hostname}</p>
+                    </div>
+                  </div>
+                </a>
+              )}
+            </div>
+          )}
+          
+          {content && (
+            <p className="text-[15px] leading-relaxed whitespace-pre-wrap break-words">
+              {content}
+            </p>
+          )}
           <div
             className={cn(
               "flex items-center justify-end gap-1 mt-1 -mb-0.5",
