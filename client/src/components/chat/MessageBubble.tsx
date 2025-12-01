@@ -137,6 +137,14 @@ export function MessageBubble({
                   </div>
                 </div>
                 
+                {media.duration && (
+                  <div className="absolute top-3 left-3">
+                    <div className="px-2.5 py-1.5 rounded-full bg-black/70 text-xs text-white font-medium">
+                      {media.duration}
+                    </div>
+                  </div>
+                )}
+                
                 <div className="absolute bottom-3 right-3 flex items-center gap-2">
                   {media.views !== undefined && (
                     <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/70 text-xs text-white font-medium">
@@ -153,6 +161,7 @@ export function MessageBubble({
           </>
         )}
         
+        {!(!Array.isArray(media) && media?.type === "video" && media?.url && !content) && (
         <div
           className={cn(
             "px-3 py-2 relative",
@@ -282,6 +291,7 @@ export function MessageBubble({
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   );
