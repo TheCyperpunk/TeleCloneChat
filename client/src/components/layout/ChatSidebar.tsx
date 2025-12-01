@@ -4,12 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatListItem, ChatListItemProps } from "../chat/ChatListItem";
 import { CategoryTabs, Category } from "./CategoryTabs";
 import { SearchBar } from "./SearchBar";
-import { StoriesView, StoryUser } from "../views/StoriesView";
-import { ExploreView } from "../views/ExploreView";
-import { ChannelsView, Channel } from "../views/ChannelsView";
-import { BotsView, BotItem } from "../views/BotsView";
-import { SavedView, SavedMessage } from "../views/SavedView";
-import { Menu, Edit, Settings, LogOut, Search } from "lucide-react";
+import { Menu, Settings, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,60 +14,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "../ThemeToggle";
 
-interface ExplorePost {
-  id: string;
-  imageUrl: string;
-  likes: number;
-  comments: number;
-  userName: string;
-}
-
 interface ChatSidebarProps {
   chats: ChatListItemProps[];
-  stories: StoryUser[];
   groups: ChatListItemProps[];
-  explorePosts: ExplorePost[];
-  channels: Channel[];
-  bots: BotItem[];
-  savedMessages: SavedMessage[];
-  currentUserName: string;
-  currentUserAvatar?: string;
-  hasOwnStory?: boolean;
   selectedChatId?: string;
   onChatSelect: (chatId: string) => void;
-  onStoryClick: (userId: string) => void;
-  onAddStory: () => void;
   onNewChat: () => void;
   onNewGroup: () => void;
-  onNewChannel: () => void;
   onSettings: () => void;
-  onSubscribeChannel: (channelId: string) => void;
-  onStartBot: (botId: string) => void;
-  onDeleteSavedMessage: (messageId: string) => void;
 }
 
 export function ChatSidebar({
   chats,
-  stories,
   groups,
-  explorePosts,
-  channels,
-  bots,
-  savedMessages,
-  currentUserName,
-  currentUserAvatar,
-  hasOwnStory = false,
   selectedChatId,
   onChatSelect,
-  onStoryClick,
-  onAddStory,
   onNewChat,
   onNewGroup,
-  onNewChannel,
   onSettings,
-  onSubscribeChannel,
-  onStartBot,
-  onDeleteSavedMessage,
 }: ChatSidebarProps) {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
@@ -92,15 +51,6 @@ export function ChatSidebar({
     group.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const filteredChannels = (channels || []).filter((ch) =>
-    ch.name.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const filteredBots = (bots || []).filter((bot) =>
-    bot.name.toLowerCase().includes(search.toLowerCase()) ||
-    bot.username.toLowerCase().includes(search.toLowerCase())
-  );
-
   const unreadCounts: Partial<Record<Category, number>> = {
     all: allChats.reduce((sum, c) => sum + (c.unreadCount || 0), 0),
     groups: (groups || []).reduce((sum, g) => sum + (g.unreadCount || 0), 0),
@@ -118,6 +68,7 @@ export function ChatSidebar({
             <ChatListItem
               key={chat.id}
               {...chat}
+              type={chat.isGroup ? "group" : "chat"}
               isSelected={chat.id === selectedChatId}
               onClick={() => onChatSelect(chat.id)}
             />
@@ -132,8 +83,6 @@ export function ChatSidebar({
     const allItems = [
       ...filteredPersonalChats.map((chat) => ({ type: "chat", data: chat })),
       ...filteredGroups.map((group) => ({ type: "group", data: group })),
-      ...filteredChannels.map((channel) => ({ type: "channel", data: channel })),
-      ...filteredBots.map((bot) => ({ type: "bot", data: bot })),
     ];
 
     // Shuffle array using Fisher-Yates algorithm
@@ -152,51 +101,16 @@ export function ChatSidebar({
             </div>
           ) : (
             shuffled.map((item) => {
-              if (item.type === "chat" || item.type === "group") {
-                const chat = item.data as ChatListItemProps;
-                return (
-                  <ChatListItem
-                    key={chat.id}
-                    {...chat}
-                    type={item.type as "chat" | "group"}
-                    isSelected={chat.id === selectedChatId}
-                    onClick={() => onChatSelect(chat.id)}
-                  />
-                );
-              } else if (item.type === "channel") {
-                const channel = item.data as Channel;
-                return (
-                  <ChatListItem
-                    key={channel.id}
-                    id={channel.id}
-                    name={channel.name}
-                    avatar={channel.avatar}
-                    lastMessage={channel.description}
-                    timestamp={channel.lastPostTime || ""}
-                    unreadCount={0}
-                    type="channel"
-                    isSelected={channel.id === selectedChatId}
-                    onClick={() => onChatSelect(channel.id)}
-                  />
-                );
-              } else if (item.type === "bot") {
-                const bot = item.data as BotItem;
-                return (
-                  <ChatListItem
-                    key={bot.id}
-                    id={bot.id}
-                    name={bot.name}
-                    avatar={bot.avatar}
-                    lastMessage={bot.username}
-                    timestamp="Bot"
-                    unreadCount={0}
-                    type="bot"
-                    isSelected={bot.id === selectedChatId}
-                    onClick={() => onChatSelect(bot.id)}
-                  />
-                );
-              }
-              return null;
+              const chat = item.data as ChatListItemProps;
+              return (
+                <ChatListItem
+                  key={chat.id}
+                  {...chat}
+                  type={item.type as "chat" | "group"}
+                  isSelected={chat.id === selectedChatId}
+                  onClick={() => onChatSelect(chat.id)}
+                />
+              );
             })
           )}
         </div>
@@ -218,71 +132,88 @@ export function ChatSidebar({
   };
 
   return (
-    <div className="w-full md:w-80 h-full flex flex-col border-r bg-sidebar">
-      <header className="h-14 border-b flex items-center justify-between px-3 gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="icon" variant="ghost" data-testid="button-menu">
-              <Menu className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
-            <DropdownMenuItem onClick={onSettings}>
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => console.log("Logout")}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        {showSearch ? (
-          <div className="flex-1">
-            <SearchBar
-              value={search}
-              onChange={setSearch}
-              placeholder="Search..."
-              autoFocus
-              onBlur={() => {
-                if (!search) setShowSearch(false);
-              }}
-            />
-          </div>
-        ) : (
-          <>
-            <h1 className="text-lg font-semibold flex-1">TeleChat</h1>
+    <div className="w-80 bg-sidebar border-r border-sidebar-border flex flex-col h-full">
+      {/* Header */}
+      <div className="p-3 border-b border-sidebar-border">
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-xl font-bold text-sidebar-foreground">TeleChat</h1>
+          <div className="flex items-center gap-1">
             <Button
               size="icon"
               variant="ghost"
-              onClick={() => setShowSearch(true)}
+              onClick={() => setShowSearch(!showSearch)}
               data-testid="button-search"
             >
-              <Search className="h-5 w-5" />
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
             </Button>
-          </>
-        )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  data-testid="button-menu"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={onSettings}>
+                  <Settings className="w-4 h-4 mr-2" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <ThemeToggle />
+          </div>
+        </div>
 
-        <ThemeToggle />
+        {showSearch && (
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Search chats..."
+          />
+        )}
+      </div>
+
+      {/* Category Tabs */}
+      <div className="px-3 pt-3">
+        <CategoryTabs
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
+          unreadCounts={unreadCounts}
+        />
+      </div>
+
+      {/* Chat List */}
+      {renderContent()}
+
+      {/* New Chat/Group Buttons */}
+      <div className="p-3 border-t border-sidebar-border flex gap-2">
         <Button
-          size="icon"
-          variant="ghost"
           onClick={onNewChat}
+          variant="outline"
+          className="flex-1"
           data-testid="button-new-chat"
         >
-          <Edit className="h-5 w-5" />
+          New Chat
         </Button>
-      </header>
-
-      <CategoryTabs
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-        unreadCounts={unreadCounts}
-      />
-
-      {renderContent()}
+        <Button
+          onClick={onNewGroup}
+          variant="default"
+          className="flex-1"
+          data-testid="button-new-group"
+        >
+          New Group
+        </Button>
+      </div>
     </div>
   );
 }
