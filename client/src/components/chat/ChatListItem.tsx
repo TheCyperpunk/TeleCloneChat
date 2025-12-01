@@ -55,12 +55,12 @@ export function ChatListItem({
     <div
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 px-3 py-2 cursor-pointer hover-elevate active-elevate-2 rounded-md",
+        "flex items-center gap-2 px-3 py-2 cursor-pointer hover-elevate active-elevate-2 rounded-md",
         isSelected && "bg-accent"
       )}
       data-testid={`chat-item-${id}`}
     >
-      <div className="relative">
+      <div className="relative flex-shrink-0">
         <Avatar
           src={avatar}
           name={name}
@@ -75,22 +75,22 @@ export function ChatListItem({
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between gap-3 mb-0.5">
-          <div className="flex items-center gap-2 min-w-0 flex-1">
+        <div className="flex items-center justify-between gap-2 mb-0.5">
+          <div className="flex items-center gap-1.5 min-w-0 flex-1">
             <span className="font-semibold text-sm truncate">{name}</span>
             {typeInfo && (
-              <span className="flex items-center gap-1 px-2 py-0.5 bg-primary/20 rounded-md flex-shrink-0">
+              <span className="flex items-center gap-1 px-1.5 py-0.5 bg-primary/20 rounded-md flex-shrink-0 text-xs">
                 {typeInfo.icon && (
                   <typeInfo.icon className="h-3 w-3 text-primary" />
                 )}
-                <span className="text-xs font-medium text-primary">
+                <span className="font-medium text-primary text-xs">
                   {typeInfo.label}
                 </span>
               </span>
             )}
           </div>
           {timestamp && (
-            <span className="text-xs text-muted-foreground flex-shrink-0 ml-2">
+            <span className="text-xs text-muted-foreground flex-shrink-0">
               {timestamp}
             </span>
           )}

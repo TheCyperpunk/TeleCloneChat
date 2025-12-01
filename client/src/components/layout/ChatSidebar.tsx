@@ -131,7 +131,7 @@ export function ChatSidebar({
   };
 
   return (
-    <div className="flex-1 max-w-sm bg-sidebar border-r border-sidebar-border flex flex-col h-full">
+    <div className="w-96 bg-sidebar border-r border-sidebar-border flex flex-col h-full">
       {/* Header */}
       <div className="p-3 border-b border-sidebar-border">
         <div className="flex items-center justify-between mb-3">
