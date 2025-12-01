@@ -60,15 +60,14 @@ export function MessageBubble({
     >
       {!isOwn && showAvatar && (
         <div className="flex-shrink-0 w-8">
-          {isLastInGroup && (
-            <Avatar src={senderAvatar} name={senderName || "User"} size="sm" />
-          )}
+          <Avatar src={senderAvatar} name={senderName || "User"} size="sm" />
         </div>
       )}
       <div
         className={cn(
           "max-w-[70%] md:max-w-md",
-          !isOwn && showAvatar && !isLastInGroup && "ml-10"
+          !isOwn && showAvatar && "ml-0",
+          !isOwn && !showAvatar && "ml-10"
         )}
       >
         {isFirstInGroup && !isOwn && senderName && (
