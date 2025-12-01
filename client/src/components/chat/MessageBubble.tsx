@@ -82,34 +82,60 @@ export function MessageBubble({
           </span>
         )}
         {Array.isArray(media) && media.length > 0 && (
-          <div className="grid gap-1 mb-1" style={{ gridTemplateColumns: media.length === 1 ? '1fr' : media.length === 2 ? '1fr 1fr' : '1fr 1fr 1fr' }}>
-            {media.map((item, idx) => (
-              <div key={idx} className="relative rounded-lg overflow-hidden group" style={{ aspectRatio: '1/1' }}>
-                <img
-                  src={item.url}
-                  alt={`Media ${idx + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                {item.type === "video" && (
-                  <>
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors">
+          <div className="grid gap-1 mb-1" style={{ 
+            gridTemplateColumns: media.length === 1 ? '1fr' : media.length === 2 ? '1fr 1fr' : media.length <= 4 ? '1fr 1fr' : '1fr 1fr 1fr',
+            gridAutoRows: 'auto'
+          }}>
+            {media.map((item, idx) => {
+              let colSpan = 1;
+              let rowSpan = 1;
+              
+              // Create varied grid sizes
+              if (media.length > 2) {
+                if (idx === 0 && media.length > 4) { colSpan = 1; rowSpan = 2; }
+                else if (idx === 1 && media.length === 3) { colSpan = 1; rowSpan = 2; }
+                else if (idx === 1 && media.length > 4) { colSpan = 1; }
+              }
+              
+              return (
+                <div 
+                  key={idx} 
+                  className="relative rounded-lg overflow-hidden group" 
+                  style={{ 
+                    aspectRatio: '1/1',
+                    gridColumn: `span ${colSpan}`,
+                    gridRow: `span ${rowSpan}`
+                  }}
+                >
+                  <img
+                    src={item.url}
+                    alt={`Media ${idx + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-black/60 group-hover:bg-black/80 transition-colors">
+                      <Download className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                  {item.type === "video" && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors pointer-events-none">
                       <Play className="w-8 h-8 text-primary-foreground fill-primary-foreground opacity-80" />
                     </div>
-                    {item.duration && (
-                      <div className="absolute bottom-2 left-2 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white font-medium">
-                        {item.duration}
-                      </div>
-                    )}
-                  </>
-                )}
-                {item.views !== undefined && (
-                  <div className="absolute bottom-2 right-2 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white">
-                    <Eye className="w-3 h-3" />
-                    {item.views}
-                  </div>
-                )}
-              </div>
-            ))}
+                  )}
+                  {item.type === "video" && item.duration && (
+                    <div className="absolute bottom-2 left-2 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white font-medium">
+                      {item.duration}
+                    </div>
+                  )}
+                  {item.views !== undefined && (
+                    <div className="absolute bottom-2 right-2 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-black/60 text-xs text-white">
+                      <Eye className="w-3 h-3" />
+                      {item.views}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
         
