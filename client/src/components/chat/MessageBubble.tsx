@@ -54,7 +54,7 @@ export function MessageBubble({
       className={cn(
         "flex gap-2",
         isOwn ? "justify-end pr-4" : "justify-start",
-        isLastInGroup ? "mb-2" : "mb-0.5"
+        isLastInGroup ? "mb-2" : "mb-1.5"
       )}
       data-testid={`message-${id}`}
     >
