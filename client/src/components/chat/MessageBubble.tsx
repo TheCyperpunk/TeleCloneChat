@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Check, CheckCheck, Play, Link2, Eye, Download, Volume2, X, Pause } from "lucide-react";
+import { Check, CheckCheck, Play, Link2, Eye, Download, Volume2, X, Pause, Volume1 } from "lucide-react";
 import { Avatar } from "./Avatar";
 import { useState, useRef, useEffect } from "react";
 
@@ -51,6 +51,9 @@ export function MessageBubble({
 }: MessageBubbleProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const toggleAudio = () => {
@@ -65,16 +68,43 @@ export function MessageBubble({
     }
   };
 
-  useEffect(() => {
+  const handleSeek = (newTime: number) => {
     if (audioRef.current) {
-      audioRef.current.addEventListener("ended", () => setPlayingAudio(null));
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
     }
+  };
+
+  const handleVolumeChange = (newVolume: number) => {
+    setVolume(newVolume);
+    if (audioRef.current) audioRef.current.volume = newVolume;
+  };
+
+  const formatTime = (time: number) => {
+    if (!time || isNaN(time)) return "0:00";
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateDuration = () => setDuration(audio.duration);
+    const handleEnded = () => setPlayingAudio(null);
+
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("loadedmetadata", updateDuration);
+    audio.addEventListener("ended", handleEnded);
+
     return () => {
-      if (audioRef.current) {
-        audioRef.current.removeEventListener("ended", () => setPlayingAudio(null));
-      }
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("loadedmetadata", updateDuration);
+      audio.removeEventListener("ended", handleEnded);
     };
-  }, []);
+  }, [id]);
 
   return (
     <div
@@ -251,64 +281,63 @@ export function MessageBubble({
           {!Array.isArray(media) && media?.type === "audio" && media?.url && (
             <>
               <audio ref={audioRef} src={media.url} />
-              <div className="flex items-center gap-2.5 my-1">
-                <button 
-                  onClick={toggleAudio}
-                  className={cn(
-                    "flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors",
-                    isOwn
-                      ? "bg-primary-foreground/40 hover:bg-primary-foreground/50"
-                      : "bg-primary hover:bg-primary/90"
-                  )}
-                  data-testid={`button-play-audio-${id}`}
-                >
-                  {playingAudio === id ? (
-                    <Pause className={cn(
-                      "w-4 h-4 fill-current",
-                      isOwn ? "text-primary-foreground" : "text-primary-foreground"
-                    )} />
-                  ) : (
-                    <Play className={cn(
-                      "w-4 h-4 fill-current",
-                      isOwn ? "text-primary-foreground" : "text-primary-foreground"
-                    )} />
-                  )}
-                </button>
-              
-              <div className="flex-1 h-6 flex items-center">
-                <svg className="w-full h-full" viewBox="0 0 100 24" preserveAspectRatio="none">
-                  {[...Array(35)].map((_, i) => {
-                    const height = Math.random() * 20 + 2;
-                    return (
-                      <rect
-                        key={i}
-                        x={i * 2.85}
-                        y={(24 - height) / 2}
-                        width="1.8"
-                        height={height}
-                        fill={isOwn ? "rgba(255,255,255,0.6)" : "rgba(42, 171, 238, 0.6)"}
-                        rx="0.75"
-                      />
-                    );
-                  })}
-                </svg>
-              </div>
-              
-              {media.duration && (
-                <span className={cn(
-                  "text-xs font-medium flex-shrink-0 min-w-fit",
-                  isOwn ? "text-primary-foreground/80" : "text-muted-foreground"
-                )}>
-                  {media.duration}
-                </span>
-              )}
-              
-              <button className="flex-shrink-0 p-1 transition-colors">
-                <Volume2 className={cn(
-                  "w-4 h-4",
-                  isOwn ? "text-primary-foreground/80" : "text-muted-foreground"
-                )} />
-              </button>
+              <div className="flex flex-col gap-2 my-1 w-full">
+                <div className="flex items-center gap-2.5">
+                  <button 
+                    onClick={toggleAudio}
+                    className={cn(
+                      "flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors",
+                      isOwn
+                        ? "bg-primary-foreground/40 hover:bg-primary-foreground/50"
+                        : "bg-primary hover:bg-primary/90"
+                    )}
+                    data-testid={`button-play-audio-${id}`}
+                  >
+                    {playingAudio === id ? (
+                      <Pause className={cn(
+                        "w-4 h-4 fill-current",
+                        isOwn ? "text-primary-foreground" : "text-primary-foreground"
+                      )} />
+                    ) : (
+                      <Play className={cn(
+                        "w-4 h-4 fill-current",
+                        isOwn ? "text-primary-foreground" : "text-primary-foreground"
+                      )} />
+                    )}
+                  </button>
+                
+                  <div className="flex-1 h-1 bg-black/20 rounded-full cursor-pointer" onClick={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const newTime = (e.clientX - rect.left) / rect.width * duration;
+                    handleSeek(newTime);
+                  }}>
+                    <div 
+                      className="h-full bg-current rounded-full transition-all"
+                      style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+                    />
+                  </div>
+                  
+                  <span className={cn(
+                    "text-xs font-medium flex-shrink-0 min-w-fit",
+                    isOwn ? "text-primary-foreground/80" : "text-muted-foreground"
+                  )}>
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </span>
+                </div>
+                
+                <div className="flex items-center gap-1.5">
+                  <Volume1 className={cn("w-4 h-4", isOwn ? "text-primary-foreground/80" : "text-muted-foreground")} />
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={volume}
+                    onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                    className="flex-1 h-1 rounded-full cursor-pointer accent-current"
+                    data-testid={`slider-volume-${id}`}
+                  />
+                </div>
               </div>
             </>
           )}
