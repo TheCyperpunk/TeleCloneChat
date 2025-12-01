@@ -137,16 +137,19 @@ export function MessageBubble({
                   </div>
                 </div>
                 
-                {media.duration && (
-                  <div className="absolute top-3 left-3 px-2 py-1 rounded-md bg-black/60 text-xs text-white font-medium">
-                    {media.duration}
-                  </div>
-                )}
-                
-                {media.fileSize && (
-                  <div className="absolute bottom-3 left-3 flex items-center gap-1 px-2 py-1 rounded-md bg-black/60 text-xs text-white">
-                    <Download className="w-3 h-3" />
-                    <span>{media.fileSize}</span>
+                {(media.duration || media.fileSize) && (
+                  <div className="absolute top-3 left-3 flex flex-col gap-1">
+                    {media.duration && (
+                      <div className="px-2 py-1 rounded-md bg-black/60 text-xs text-white font-medium">
+                        {media.duration}
+                      </div>
+                    )}
+                    {media.fileSize && (
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-black/60 text-xs text-white">
+                        <Download className="w-3 h-3" />
+                        <span>{media.fileSize}</span>
+                      </div>
+                    )}
                   </div>
                 )}
                 
