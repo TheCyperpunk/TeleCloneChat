@@ -53,7 +53,7 @@ export function MessageBubble({
     <div
       className={cn(
         "flex gap-2",
-        isOwn ? "justify-end pr-4" : "justify-start pl-4",
+        isOwn ? "justify-end pr-4" : "justify-start",
         isLastInGroup ? "mb-2" : "mb-0.5"
       )}
       data-testid={`message-${id}`}
@@ -72,7 +72,8 @@ export function MessageBubble({
       )}
       <div
         className={cn(
-          "max-w-xs sm:max-w-sm md:max-w-md flex flex-col"
+          "flex flex-col",
+          isOwn ? "max-w-xs sm:max-w-sm md:max-w-md" : "flex-1 max-w-xs sm:max-w-sm md:max-w-md"
         )}
       >
         {isFirstInGroup && !isOwn && senderName && (
