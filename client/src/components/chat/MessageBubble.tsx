@@ -59,24 +59,22 @@ export function MessageBubble({
       data-testid={`message-${id}`}
     >
       {!isOwn && showAvatar && (
-        <div className="flex-shrink-0 w-8">
+        <div className="flex-shrink-0 w-8 flex items-start pt-1">
           <Avatar src={senderAvatar} name={senderName || "User"} size="sm" />
         </div>
       )}
       <div
         className={cn(
-          "max-w-[70%] md:max-w-md",
-          !isOwn && showAvatar && "ml-0",
-          !isOwn && !showAvatar && "ml-10"
+          "max-w-xs sm:max-w-sm md:max-w-md flex flex-col"
         )}
       >
         {isFirstInGroup && !isOwn && senderName && (
-          <span className="text-xs font-medium text-primary ml-3 mb-0.5 block">
+          <span className="text-xs font-medium text-primary mb-1 block">
             {senderName}
           </span>
         )}
         {Array.isArray(media) && media.length > 0 && (
-          <div className="grid gap-1 -mx-3 -mt-2 mb-2" style={{ gridTemplateColumns: media.length === 1 ? '1fr' : media.length === 2 ? '1fr 1fr' : '1fr 1fr 1fr' }}>
+          <div className="grid gap-1 mb-1" style={{ gridTemplateColumns: media.length === 1 ? '1fr' : media.length === 2 ? '1fr 1fr' : '1fr 1fr 1fr' }}>
             {media.map((item, idx) => (
               <div key={idx} className="relative rounded-lg overflow-hidden group" style={{ aspectRatio: '1/1' }}>
                 <img
@@ -110,16 +108,16 @@ export function MessageBubble({
         {!Array.isArray(media) && (media?.type === "image" || media?.type === "video") && media?.url && (
           <>
             {media.type === "image" && (
-              <div className="rounded-xl overflow-hidden -mx-3 -mt-2 mb-2">
+              <div className="rounded-xl overflow-hidden mb-1">
                 <img 
                   src={media.url} 
                   alt="Message image"
-                  className="w-full max-h-80 object-cover"
+                  className="w-full max-h-80 object-cover rounded-xl"
                 />
               </div>
             )}
             {media.type === "video" && (
-              <div className="relative rounded-xl overflow-hidden -mx-3 -mt-2 mb-2 w-screen -left-1/2 left-[calc(-50vw+50%)]" style={{ maxWidth: 'calc(70vw)', aspectRatio: '9/16' }}>
+              <div className="relative rounded-xl overflow-hidden mb-1" style={{ aspectRatio: '9/16', maxWidth: '100%' }}>
                 <img
                   src={media.url}
                   alt="Video thumbnail"
