@@ -75,27 +75,25 @@ export function ChatListItem({
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between gap-1 mb-1">
-          <div className="flex items-center gap-1 min-w-0">
-            <span className="font-semibold text-sm whitespace-nowrap">{name}</span>
-            {typeInfo && (
-              <span className="flex items-center gap-1 px-1.5 py-0.5 bg-primary/20 rounded-md flex-shrink-0 text-xs whitespace-nowrap">
-                {typeInfo.icon && (
-                  <typeInfo.icon className="h-3 w-3 text-primary" />
-                )}
-                <span className="font-medium text-primary text-xs">
-                  {typeInfo.label}
-                </span>
+        <div className="flex items-center gap-1 mb-0.5">
+          <span className="font-semibold text-sm truncate">{name}</span>
+          {typeInfo && (
+            <span className="flex items-center gap-1 px-1.5 py-0.5 bg-primary/20 rounded-md flex-shrink-0 text-xs whitespace-nowrap">
+              {typeInfo.icon && (
+                <typeInfo.icon className="h-3 w-3 text-primary" />
+              )}
+              <span className="font-medium text-primary text-xs">
+                {typeInfo.label}
               </span>
-            )}
-          </div>
+            </span>
+          )}
           {timestamp && (
-            <span className="text-xs text-muted-foreground flex-shrink-0 whitespace-nowrap">
+            <span className="text-xs text-muted-foreground flex-shrink-0 ml-auto whitespace-nowrap">
               {timestamp}
             </span>
           )}
         </div>
-        <div className="flex items-center justify-between gap-2 mt-0.5">
+        <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1 min-w-0 flex-1">
             {lastMessageStatus && !isTyping && (
               <span className="flex-shrink-0">

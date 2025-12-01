@@ -135,15 +135,39 @@ export function ChatSidebar({
       {/* Header */}
       <div className="p-3 border-b border-sidebar-border">
         <div className="flex items-center justify-between mb-3">
-          <h1 className="text-xl font-bold text-sidebar-foreground">TeleChat</h1>
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={() => setShowSearch(!showSearch)}
-            data-testid="button-search"
-          >
-            <SearchIcon className="h-5 w-5" />
-          </Button>
+          <h1 className="text-xl font-bold text-sidebar-foreground">xmo</h1>
+          <div className="flex items-center gap-1">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setShowSearch(!showSearch)}
+              data-testid="button-search"
+            >
+              <SearchIcon className="h-5 w-5" />
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  data-testid="button-menu"
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={onSettings}>
+                  <Settings className="w-4 h-4 mr-2" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         {showSearch && (
@@ -166,32 +190,6 @@ export function ChatSidebar({
 
       {/* Chat List */}
       {renderContent()}
-
-      {/* Footer Settings */}
-      <div className="p-3 border-t border-sidebar-border flex gap-2 mt-auto">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="icon"
-              variant="ghost"
-              data-testid="button-menu"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuItem onClick={onSettings}>
-              <Settings className="w-4 h-4 mr-2" />
-              <span>Settings</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="w-4 h-4 mr-2" />
-              <span>Logout</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
     </div>
   );
 }
