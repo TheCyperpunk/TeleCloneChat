@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatListItem, ChatListItemProps } from "../chat/ChatListItem";
 import { CategoryTabs, Category } from "./CategoryTabs";
 import { SearchBar } from "./SearchBar";
-import { Menu, Settings, LogOut } from "lucide-react";
+import { Menu, Settings, LogOut, Search as SearchIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ThemeToggle } from "../ThemeToggle";
 
 interface ChatSidebarProps {
   chats: ChatListItemProps[];
@@ -132,7 +131,7 @@ export function ChatSidebar({
   };
 
   return (
-    <div className="w-80 bg-sidebar border-r border-sidebar-border flex flex-col h-full">
+    <div className="flex-1 max-w-sm bg-sidebar border-r border-sidebar-border flex flex-col h-full">
       {/* Header */}
       <div className="p-3 border-b border-sidebar-border">
         <div className="flex items-center justify-between mb-3">
@@ -144,9 +143,7 @@ export function ChatSidebar({
               onClick={() => setShowSearch(!showSearch)}
               data-testid="button-search"
             >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+              <SearchIcon className="h-5 w-5" />
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -170,7 +167,6 @@ export function ChatSidebar({
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <ThemeToggle />
           </div>
         </div>
 
