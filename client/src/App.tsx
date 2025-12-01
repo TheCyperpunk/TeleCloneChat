@@ -175,23 +175,10 @@ function TeleChat() {
     console.log("Create group:", groupName, "with members:", memberIds);
   };
 
-  const showSidebar = !isMobile || !selectedChatId;
   const showChat = !isMobile || selectedChatId;
 
   return (
     <div className="h-screen w-full flex overflow-hidden bg-background">
-      {showSidebar && (
-        <ChatSidebar
-          chats={mockChats}
-          groups={mockGroups}
-          selectedChatId={selectedChatId}
-          onChatSelect={setSelectedChatId}
-          onNewChat={() => setShowNewChat(true)}
-          onNewGroup={() => setShowNewChat(true)}
-          onSettings={() => console.log("Settings")}
-        />
-      )}
-
       {showChat && (
         <div className="flex-1 flex">
           {selectedChat ? (
