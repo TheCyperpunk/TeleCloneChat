@@ -266,7 +266,7 @@ export function MessageBubble({
             </div>
           )}
           
-          {content && (
+          {content && !(!Array.isArray(media) && media?.type === "audio" && media?.url) && (
             <p className="text-[15px] leading-relaxed whitespace-pre-wrap break-words">
               {content}
             </p>
