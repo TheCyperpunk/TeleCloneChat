@@ -44,7 +44,7 @@ export function ChatHeader({
             onClick={onBack}
             data-testid="button-back"
           >
-            <ArrowLeft className="h-7 w-7" />
+            <ArrowLeft className="h-9 w-9" />
           </Button>
         )}
         <button
@@ -83,7 +83,7 @@ export function ChatHeader({
           onClick={() => console.log("Voice call")}
           data-testid="button-voice-call"
         >
-          <Phone className="h-7 w-7" />
+          <Phone className="h-9 w-9" />
         </Button>
         <Button
           size="icon"
@@ -91,7 +91,7 @@ export function ChatHeader({
           onClick={() => console.log("Video call")}
           data-testid="button-video-call"
         >
-          <Video className="h-7 w-7" />
+          <Video className="h-9 w-9" />
         </Button>
         <Button
           size="icon"
@@ -99,12 +99,12 @@ export function ChatHeader({
           onClick={onSearchClick}
           data-testid="button-search-chat"
         >
-          <Search className="h-7 w-7" />
+          <Search className="h-9 w-9" />
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="icon" variant="ghost" data-testid="button-chat-menu">
-              <MoreVertical className="h-7 w-7" />
+              <MoreVertical className="h-9 w-9" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

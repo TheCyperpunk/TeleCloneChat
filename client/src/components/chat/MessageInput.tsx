@@ -103,7 +103,7 @@ export function MessageInput({
               variant="ghost"
               data-testid="button-attach"
             >
-              <Paperclip className="h-7 w-7" />
+              <Paperclip className="h-9 w-9" />
             </Button>
           </PopoverTrigger>
           <PopoverContent side="top" align="start" className="w-auto p-2">
@@ -134,7 +134,7 @@ export function MessageInput({
             onClick={() => console.log("Open emoji picker")}
             data-testid="button-emoji"
           >
-            <Smile className="h-7 w-7" />
+            <Smile className="h-9 w-9" />
           </Button>
           <textarea
             ref={inputRef}
@@ -154,9 +154,9 @@ export function MessageInput({
           data-testid={message.trim() ? "button-send" : "button-record"}
         >
           {message.trim() ? (
-            <Send className="h-7 w-7" />
+            <Send className="h-9 w-9" />
           ) : (
-            <Mic className="h-7 w-7" />
+            <Mic className="h-9 w-9" />
           )}
         </Button>
       </div>
