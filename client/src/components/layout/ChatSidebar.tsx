@@ -194,26 +194,6 @@ export function ChatSidebar({
 
       {/* Chat List */}
       {renderContent()}
-
-      {/* New Chat/Group Buttons */}
-      <div className="p-3 border-t border-sidebar-border flex gap-2">
-        <Button
-          onClick={onNewChat}
-          variant="outline"
-          className="flex-1"
-          data-testid="button-new-chat"
-        >
-          New Chat
-        </Button>
-        <Button
-          onClick={onNewGroup}
-          variant="default"
-          className="flex-1"
-          data-testid="button-new-group"
-        >
-          New Group
-        </Button>
-      </div>
     </div>
   );
 }
