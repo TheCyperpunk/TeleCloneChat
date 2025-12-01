@@ -161,7 +161,7 @@ export function MessageBubble({
           </>
         )}
         
-        {!(!Array.isArray(media) && media?.type === "video" && media?.url && !content) && (
+        {!(((Array.isArray(media) && media.length > 0) || (!Array.isArray(media) && (media?.type === "video" || media?.type === "image") && media?.url)) && !content) && (
         <div
           className={cn(
             "px-3 py-2 relative",
