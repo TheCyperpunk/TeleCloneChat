@@ -152,6 +152,18 @@ export function MessageBubble({
                     )}
                   </div>
                 )}
+                
+                <div className="absolute bottom-3 right-3 flex items-center gap-2">
+                  {media.views !== undefined && (
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 text-xs text-white">
+                      <Eye className="w-3 h-3" />
+                      <span>{media.views}</span>
+                    </div>
+                  )}
+                  <div className="px-2 py-1 rounded-full bg-black/60 text-xs text-white font-medium">
+                    {timestamp}
+                  </div>
+                </div>
               </div>
             )}
           </>
@@ -266,23 +278,25 @@ export function MessageBubble({
               {content}
             </p>
           )}
-          <div
-            className={cn(
-              "flex items-center justify-end gap-1 mt-1 -mb-0.5",
-              isOwn ? "text-primary-foreground/70" : "text-muted-foreground"
-            )}
-          >
-            <span className="text-[10px]">{timestamp}</span>
-            {isOwn && status && (
-              <span className="flex-shrink-0">
-                {status === "read" ? (
-                  <CheckCheck className="h-3.5 w-3.5" />
-                ) : (
-                  <Check className="h-3.5 w-3.5" />
-                )}
-              </span>
-            )}
-          </div>
+          {(!Array.isArray(media) && media?.type === "video") ? null : (
+            <div
+              className={cn(
+                "flex items-center justify-end gap-1 mt-1 -mb-0.5",
+                isOwn ? "text-primary-foreground/70" : "text-muted-foreground"
+              )}
+            >
+              <span className="text-[10px]">{timestamp}</span>
+              {isOwn && status && (
+                <span className="flex-shrink-0">
+                  {status === "read" ? (
+                    <CheckCheck className="h-3.5 w-3.5" />
+                  ) : (
+                    <Check className="h-3.5 w-3.5" />
+                  )}
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
