@@ -61,7 +61,7 @@ export function LandingPage({ onConnectWallet }: LandingPageProps) {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="w-full py-2.5 px-4 bg-white/10 backdrop-blur-md text-white placeholder:text-white/50 font-medium text-sm rounded-lg border border-white/20 focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-400/50 transition-all"
+                  className="w-full py-2.5 px-4 bg-white/10 backdrop-blur-md text-black placeholder:text-black font-medium text-sm rounded-lg border border-white/20 focus:border-white/20 focus:outline-none transition-all"
                 />
                 <button
                   type="submit"
@@ -74,7 +74,7 @@ export function LandingPage({ onConnectWallet }: LandingPageProps) {
               {/* Back Button */}
               <button
                 onClick={() => setShowEmailLogin(false)}
-                className="w-full py-3 text-white/70 hover:text-white text-sm transition-colors"
+                className="w-full py-3 text-gray-600 hover:text-gray-800 text-sm transition-colors"
               >
                 ← Back to options
               </button>
