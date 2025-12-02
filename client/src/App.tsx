@@ -9,6 +9,7 @@ import { ProfilePanel } from "@/components/layout/ProfilePanel";
 import { NewChatDialog } from "@/components/layout/NewChatDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MessageBubbleProps } from "@/components/chat/MessageBubble";
+import { LandingPage } from "@/pages/landing";
 
 // todo: remove mock data - replace with real API data
 const mockChats = [
@@ -401,6 +402,19 @@ function TeleChat() {
 }
 
 function App() {
+  const [showLanding, setShowLanding] = useState(true);
+
+  if (showLanding) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <LandingPage onConnectWallet={() => setShowLanding(false)} />
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
